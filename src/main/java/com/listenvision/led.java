@@ -3,7 +3,7 @@ package com.listenvision;
 import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;
 
-public class Led {
+public class led {
 //	static 
 //	{
 //		System.loadLibrary("lv_led");  
@@ -11,7 +11,8 @@ public class Led {
 	
 	static 
 	{
-		System.load("c:\\weightdll\\led\\lv_led.dll");  
+		//System.load("c:\\weightdll\\led\\lv_led.dll");  
+		System.load("D:\\resource\\ZnczCxtc\\Led\\lv_led(java32).dll");
 	}
 	
 //	static {
