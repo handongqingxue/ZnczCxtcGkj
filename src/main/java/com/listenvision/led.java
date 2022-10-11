@@ -3,6 +3,7 @@ package com.listenvision;
 import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;
 
+//这个类名一定要小写，否则程序在运行时会报异常
 public class led {
 //	static 
 //	{
