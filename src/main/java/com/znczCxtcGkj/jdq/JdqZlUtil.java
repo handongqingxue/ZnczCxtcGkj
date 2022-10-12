@@ -34,7 +34,7 @@ public class JdqZlUtil {
 		BangFangJdq bfjdq=new BangFangJdq();
 		JdqZlUtil.setBfjdq(bfjdq);
 		JdqZlUtil.openBangFangJdq();
-		JdqBf2Util.openXiaBangDz();
+		JdqBf1Util.openShangBangDz();
 		JdqZlUtil.closeBangFangJdq();
 	}
 }

@@ -19,6 +19,23 @@ public class WriteZhiLingConst {
 	 * */
 	public static final String GUAN_JI_DIAN_QI2="CCDDA10100000002A448";
 	/**
+	 * 开继电器3
+	 * */
+	public static final String KAI_JI_DIAN_QI3="CCDDA10100040004AA54";
+	/**
+	 * 关继电器3
+	 * */
+	public static final String GUAN_JI_DIAN_QI3="CCDDA10100000004A64C";
+	/**
+	 * 开继电器4
+	 * */
+	public static final String KAI_JI_DIAN_QI4="CCDDA10100080008B264";
+	/**
+	 * 关继电器4
+	 * */
+	public static final String GUAN_JI_DIAN_QI4="CCDDA10100000008AA54";
+	
+	/**
 	 * 全开
 	 * */
 	public static final String QUAN_KAI="CCDDA101FFFFFFFF9E3C";

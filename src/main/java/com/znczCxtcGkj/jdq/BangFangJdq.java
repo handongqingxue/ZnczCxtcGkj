@@ -38,7 +38,7 @@ public class BangFangJdq {
 			client=new Socket(jdqIp,jdqPort);
 			t_read= new Thread(new ReadBangFangJdqSocket(client,BangFangJdq.this));
 			t_read.start();
-			System.out.println("连接一检继电器");
+			System.out.println("连接磅房继电器");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public class BangFangJdq {
 	public void close() {
 		try {
 			client.close();
-			System.out.println("断开一检继电器连接");
+			System.out.println("断开磅房继电器连接");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
