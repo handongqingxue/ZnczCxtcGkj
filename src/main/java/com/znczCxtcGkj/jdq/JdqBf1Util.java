@@ -10,10 +10,10 @@ public class JdqBf1Util {
 	public static void openShangBangDz() {
 		try {
 			BangFangJdq bfjdq = JdqZlUtil.getBfjdq();
-			bfjdq.sendData(WriteZhiLingConst.KAI_JI_DIAN_QI4);
+			bfjdq.sendData(WriteZhiLingConst.KAI_JI_DIAN_QI1);
 			int jdqMaiChong = LoadProperties.getJdqMaiChong();
 			Thread.sleep(jdqMaiChong);
-			bfjdq.sendData(WriteZhiLingConst.GUAN_JI_DIAN_QI4);//脉冲时间过后执行复位操作
+			bfjdq.sendData(WriteZhiLingConst.GUAN_JI_DIAN_QI1);//脉冲时间过后执行复位操作
 			//Thread.sleep(1000);
 			//yjjdq.close();
 		} catch (InterruptedException e) {

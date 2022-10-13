@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.znczCxtcGkj.jdq.BangFangJdq;
+import com.znczCxtcGkj.jdq.JdqBf1Util;
 import com.znczCxtcGkj.jdq.JdqZlUtil;
+import com.znczCxtcGkj.jdq.WriteZhiLingConst;
 
 public class BangFangTask {
 
@@ -17,7 +19,7 @@ public class BangFangTask {
 		
 		BangFangJdq bfjdq=new BangFangJdq();
 		JdqZlUtil.setBfjdq(bfjdq);
-
+		
 		//ClientSocket cs = new ClientSocket();
 		//cs.connectServer();
 		

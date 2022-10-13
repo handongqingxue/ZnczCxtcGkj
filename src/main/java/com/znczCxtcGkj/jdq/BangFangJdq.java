@@ -14,7 +14,25 @@ public class BangFangJdq {
     private Thread t_read; 
     private boolean kgl1Open;
     private boolean kgl2Open;
+    private boolean kgl3Open;
+    private boolean kgl4Open;
+
+	public boolean isKgl4Open() {
+		return kgl4Open;
+	}
+
+	public void setKgl4Open(boolean kgl4Open) {
+		this.kgl4Open = kgl4Open;
+	}
     
+	public boolean isKgl3Open() {
+		return kgl3Open;
+	}
+
+	public void setKgl3Open(boolean kgl3Open) {
+		this.kgl3Open = kgl3Open;
+	}
+
 	public boolean isKgl2Open() {
 		return kgl2Open;
 	}
