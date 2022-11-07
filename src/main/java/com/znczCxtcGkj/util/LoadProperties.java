@@ -754,6 +754,23 @@ public class LoadProperties {
 		return trim;
 	}
 	
+	/**
+	 * #配置【计划运输日期】的可入厂时间， 例如：从零点算起， 未来32小时可进入，即第二天八点之前可以进入
+	 * @return 
+	 */
+	public static Integer getIntoTheFactoryDate() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("intoTheFactoryDate").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置intoTheFactoryDate");
+			return null;
+		}
+		int parseInt = Integer.parseInt(trim);
+		return parseInt;
+	}
+	
 	
 
 }

@@ -1,0 +1,39 @@
+package com.znczCxtcGkj.yz;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.znczCxtcGkj.util.*;
+
+public class YinZhuUtil {
+	
+	static Logger logger = LoggerFactory.getLogger(YinZhuUtil.class);
+	
+	/**
+	 * ∑¢ÀÕ÷∏¡Ó
+	 * @param modBus
+	 * @param sleepTime
+	 * @return
+	 */
+	public static String sendMsg(String modBus, long sleepTime) {
+		String executeOrder = null;
+		try {
+			logger.info("∑¢ÀÕ“Ù∆µ");
+			String yinZhuCom = LoadProperties.getYinZhuCom();
+			// ø™∆Ù¥Æø⁄
+			RXTXUtil.openSerialPort(yinZhuCom, 100);
+			executeOrder = RXTXUtil.executeOrder(modBus, yinZhuCom, 1);
+		} catch (Exception e) {
+			logger.info("“Ù∆µ∑¢ÀÕ¥ÌŒÛ");
+			e.printStackTrace();
+		} finally {
+			try {
+				Thread.sleep(sleepTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			RXTXUtil.closeSerialPort();
+		}
+		return executeOrder;
+	}
+}
