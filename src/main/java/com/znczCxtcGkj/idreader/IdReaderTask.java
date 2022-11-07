@@ -108,6 +108,15 @@ public class IdReaderTask extends Thread {
 									e.printStackTrace();
 								}
 							}
+							
+				        	DingDan dd=new DingDan();
+				        	dd.setId(ddJO.getInt("id"));
+				        	dd.setDdztMc(DingDanZhuangTai.PAI_DUI_ZHONG_TEXT);
+				        	dd.setCkcs(ckcs);
+				        	APIUtil.editDingDan(dd);
+						}
+						else {
+							logger.info("计划运输日期不准确");
 						}
 					}
 					else {

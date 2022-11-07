@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 
 import org.json.JSONObject;
 
+import com.znczCxtcGkj.entity.*;
+
 public class APIUtil {
 
 	//public static final String SERVICE_URL="http://10.10.99.20:8080/ZnczLfyl/gkj/";
@@ -89,6 +91,25 @@ public class APIUtil {
 	        parames.put("cph", cph);  
 	        parames.put("ddztMc", ddztMc);
 	        resultJO = doHttp("getDingDan",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
+	public static JSONObject editDingDan(DingDan dd) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("id", dd.getId());
+	        parames.put("ddztMc", dd.getDdztMc());
+	        parames.put("ckcs", dd.getCkcs());
+	        parames.put("yjbfh", dd.getYjbfh());
+	        parames.put("ejbfh", dd.getEjbfh());
+	        resultJO = doHttp("editDingDan",parames);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
