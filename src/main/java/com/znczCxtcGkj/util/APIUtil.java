@@ -118,4 +118,17 @@ public class APIUtil {
 			return resultJO;
 		}
 	}
+	
+	public static JSONObject getJhPdHMList() {
+		JSONObject resultJO = null;
+		try {
+	        resultJO = doHttp("getJhPdHMList",null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
 }
