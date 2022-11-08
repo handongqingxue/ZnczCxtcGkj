@@ -21,6 +21,8 @@ public class APIUtil {
 	public static final String SERVICE_URL="http://localhost:8080/ZnczCxtx/gkj/";
 	public static final int YI_HAO_BANG_FANG=1;
 	public static final int ER_HAO_BANG_FANG=2;
+	public static final int SAN_HAO_BANG_FANG=3;
+	public static final int MEN_GANG=4;
 
 	//https://www.cnblogs.com/aeolian/p/7746158.html
 	//https://www.cnblogs.com/bobc/p/8809761.html
@@ -85,6 +87,22 @@ public class APIUtil {
 	}
 
 	public static JSONObject getDingDanByCphZt(String cph, String ddztMc) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("cph", cph);  
+	        parames.put("ddztMc", ddztMc);
+	        resultJO = doHttp("getDingDan",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+
+	public static JSONObject getDingDan(String cph, String ddztMc) {
 		JSONObject resultJO = null;
 		try {
 			Map parames = new HashMap<String, String>();

@@ -371,74 +371,147 @@ public class LoadProperties {
 		return trim;
 	}
 
-	/////////////////////
+	//东车牌识别摄像头start
 	/**
-	 * #车辆摄像头的ip hikvisionIP
+	 * #车辆摄像头的ip hikvisionEastIP
 	 * 
 	 * @return
 	 */
-	public static String getHikvisionIP() {
+	public static String getHikvisionEastIP() {
 		if (prop == null) {
 			prop = Method2();
 		}
-		String trim = prop.getProperty("hikvisionIP").trim();
+		String trim = prop.getProperty("hikvisionEastIP").trim();
 		if (StringUtils.isBlank(trim)) {
-			logger.debug("请在配置文件中配置hikvisionIP");
+			logger.debug("请在配置文件中配置hikvisionEastIP");
 			return null;
 		}
 		return trim;
 	}
 
 	/**
-	 * #车辆摄像头的端口 hikvisionPort
+	 * #车辆摄像头的端口 hikvisionEastPort
 	 * 
 	 * @return
 	 */
-	public static String getHikvisionPort() {
+	public static String getHikvisionEastPort() {
 		if (prop == null) {
 			prop = Method2();
 		}
-		String trim = prop.getProperty("hikvisionPort").trim();
+		String trim = prop.getProperty("hikvisionEastPort").trim();
 		if (StringUtils.isBlank(trim)) {
-			logger.debug("请在配置文件中配置hikvisionPort");
+			logger.debug("请在配置文件中配置hikvisionEastPort");
 			return null;
 		}
 		return trim;
 	}
 
 	/**
-	 * #摄像头用户名 hikvisionUserName
+	 * #摄像头用户名 hikvisionEastUserName
 	 * 
 	 * @return
 	 */
-	public static String getHikvisionUserName() {
+	public static String getHikvisionEastUserName() {
 		if (prop == null) {
 			prop = Method2();
 		}
-		String trim = prop.getProperty("hikvisionUserName").trim();
+		String trim = prop.getProperty("hikvisionEastUserName").trim();
 		if (StringUtils.isBlank(trim)) {
-			logger.debug("请在配置文件中配置hikvisionUserName");
+			logger.debug("请在配置文件中配置hikvisionEastUserName");
 			return null;
 		}
 		return trim;
 	}
 
 	/**
-	 * #摄像头的密码 hikvisionPassword
+	 * #摄像头的密码 hikvisionEastPassword
 	 * 
 	 * @return
 	 */
-	public static String getHikvisionPassword() {
+	public static String getHikvisionEastPassword() {
 		if (prop == null) {
 			prop = Method2();
 		}
-		String trim = prop.getProperty("hikvisionPassword").trim();
+		String trim = prop.getProperty("hikvisionEastPassword").trim();
 		if (StringUtils.isBlank(trim)) {
-			logger.debug("请在配置文件中配置hikvisionPassword");
+			logger.debug("请在配置文件中配置hikvisionEastPassword");
 			return null;
 		}
 		return trim;
 	}
+	//东车牌识别摄像头end
+
+
+	//西车牌识别摄像头start
+	/**
+	 * #车辆摄像头的ip hikvisionWestIP
+	 * 
+	 * @return
+	 */
+	public static String getHikvisionWestIP() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionWestIP").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionWestIP");
+			return null;
+		}
+		return trim;
+	}
+
+	/**
+	 * #车辆摄像头的端口 hikvisionWestPort
+	 * 
+	 * @return
+	 */
+	public static String getHikvisionWestPort() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionWestPort").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionWestPort");
+			return null;
+		}
+		return trim;
+	}
+
+	/**
+	 * #摄像头用户名 hikvisionWestUserName
+	 * 
+	 * @return
+	 */
+	public static String getHikvisionWestUserName() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionWestUserName").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionWestUserName");
+			return null;
+		}
+		return trim;
+	}
+
+	/**
+	 * #摄像头的密码 hikvisionWestPassword
+	 * 
+	 * @return
+	 */
+	public static String getHikvisionWestPassword() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionWestPassword").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionWestPassword");
+			return null;
+		}
+		return trim;
+	}
+	//西车牌识别摄像头end
+	
 
 	/**
 	 * 获得继电器ip
@@ -512,16 +585,16 @@ public class LoadProperties {
 	}
 
 	/**
-	 * 获得磅房号
+	 * 获得地点标识(门岗、磅房)
 	 * @return
 	 */
-	public static Integer getBangFangHao() {
+	public static Integer getPlaceFlag() {
 		if (prop == null) {
 			prop = Method2();
 		}
-		String trim = prop.getProperty("bangFangHao").trim();
+		String trim = prop.getProperty("placeFlag").trim();
 		if (StringUtils.isBlank(trim)) {
-			logger.debug("请在配置文件中配置bangFangHao");
+			logger.debug("请在配置文件中配置placeFlag");
 			return null;
 		}
 		
