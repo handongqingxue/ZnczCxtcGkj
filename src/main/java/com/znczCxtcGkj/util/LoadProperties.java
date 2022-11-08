@@ -370,6 +370,73 @@ public class LoadProperties {
 
 		return trim;
 	}
+	/**
+	 * #进厂车辆摄像头ip hikvisionJinChangIP
+	 * 
+	 * @return
+	 */
+	public static String gethikvisionJinChangIP() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionJinChangIP").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionJinChangIP");
+			return null;
+		}
+		return trim;
+	}
+
+	/**
+	 * 进厂车辆摄像头端口 hikvisionJinChangPort
+	 * 
+	 * @return
+	 */
+	public static String gethikvisionJinChangPort() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionJinChangPort").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionJinChangPort");
+			return null;
+		}
+		return trim;
+	}
+
+	/**
+	 * 进厂摄像头用户名 hikvisionJinChangUserName
+	 * 
+	 * @return
+	 */
+	public static String gethikvisionJinChangUserName() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionJinChangUserName").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionJinChangUserName");
+			return null;
+		}
+		return trim;
+	}
+
+	/**
+	 * 进厂摄像头密码 hikvisionJinChangPassword
+	 * 
+	 * @return
+	 */
+	public static String gethikvisionJinChangPassword() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("hikvisionJinChangPassword").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置hikvisionJinChangPassword");
+			return null;
+		}
+		return trim;
+	}
 
 	//东车牌识别摄像头start
 	/**

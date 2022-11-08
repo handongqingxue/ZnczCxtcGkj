@@ -378,7 +378,34 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
                 break;
         }
     }
+    
+    /**
+	 * 更新进厂识别车牌订单信息
+     * @param car
+     */
+    private void updateJCCPSBDDXX(Car car) {
+		JSONObject drcResultJO=APIUtil.getDingDan(car.getsLicense(),DingDanZhuangTai.DAI_RU_CHANG_TEXT);
+        if("ok".equals(drcResultJO.getString("status"))) {
+			JSONObject drcDdJO=drcResultJO.getJSONObject("dingDan");
+			long drcDdId = drcDdJO.getLong("id");
 
+        	DingDan dd=new DingDan();
+        	dd.setId(drcDdId);
+        	dd.setDdztMc(DingDanZhuangTai.DAI_JIAN_YAN_TEXT);
+        	JSONObject eddResultJO=APIUtil.editDingDan(dd);
+        	if("ok".equals(eddResultJO.getString("message"))) {
+        		
+        	}
+        }
+        else {
+        	//没有找到车牌对应的订单信息，语音播报
+        }
+	}
+
+	/**
+	 * 更新过磅识别车牌订单信息
+	 * @param car
+	 */
 	private void updateGBCPSBDDXX(Car car) {
 		JSONObject resultJO=null;
 		resultJO=APIUtil.getDingDan(car.getsLicense(),DingDanZhuangTai.YI_JIAN_DAI_SHANG_BANG_TEXT);

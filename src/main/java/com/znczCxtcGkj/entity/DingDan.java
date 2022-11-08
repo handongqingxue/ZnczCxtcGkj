@@ -31,11 +31,11 @@ public class DingDan {
 	 */
 	public static final Integer YI_WAN_CHENG=7;
 	
-	private Integer id;//订单id（主键）
-	public Integer getId() {
+	private Long id;//订单id（主键）
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getDdh() {
