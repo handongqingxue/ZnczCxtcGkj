@@ -1,5 +1,8 @@
 package com.znczCxtcGkj.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StringUtil {
 
 	/**
@@ -35,5 +38,37 @@ public class StringUtil {
             r += hex.toUpperCase();
         }
         return r;
+	}
+	
+	/**
+	 * 把list 中的数据每三个组成一个字符串
+	 * @param oldStrList
+	 * @return
+	 */
+	public static List<String> getListTo3(List<String> oldStrList) {
+		int count = 0;
+		int countSize = 0;
+		List<String> newStrList = new ArrayList<String>();
+		String newStr = "";
+		for (String oldStr : oldStrList) {
+			count++;
+			countSize++;
+			if (count<=3) {
+				newStr += oldStr + " ";
+			}
+			if (count == 3) {
+				newStr = newStr.substring(0, newStr.length()-1);
+				newStrList.add(newStr);
+				newStr = "";
+				count = 0;
+			}
+			
+			int size = oldStrList.size();
+			if (countSize == size) {
+				newStrList.add(newStr);
+			}
+		}
+			
+		return newStrList;
 	}
 }

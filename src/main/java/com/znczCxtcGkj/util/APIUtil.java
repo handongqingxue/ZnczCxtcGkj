@@ -17,8 +17,8 @@ import com.znczCxtcGkj.entity.*;
 
 public class APIUtil {
 
-	//public static final String SERVICE_URL="http://10.10.99.20:8080/ZnczLfyl/gkj/";
-	public static final String SERVICE_URL="http://localhost:8080/ZnczLfyl/gkj/";
+	//public static final String SERVICE_URL="http://10.10.99.20:8080/ZnczCxtx/gkj/";
+	public static final String SERVICE_URL="http://localhost:8080/ZnczCxtx/gkj/";
 	public static final int YI_HAO_BANG_FANG=1;
 	public static final int ER_HAO_BANG_FANG=2;
 
@@ -123,6 +123,23 @@ public class APIUtil {
 		JSONObject resultJO = null;
 		try {
 	        resultJO = doHttp("getJhPdHMList",null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
+	public static JSONObject editHaoMa(HaoMa hm) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("id", hm.getId());
+	        parames.put("hmztMc", hm.getHmztMc());
+	        parames.put("ddId", hm.getDdId());
+	        resultJO = doHttp("editHaoMa",parames);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

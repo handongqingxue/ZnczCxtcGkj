@@ -69,6 +69,12 @@ public class HaoMa {
 	public void setDdId(String ddId) {
 		this.ddId = ddId;
 	}
+	public String getClCph() {
+		return clCph;
+	}
+	public void setClCph(String clCph) {
+		this.clCph = clCph;
+	}
 	private String hm;//号码
 	private Integer pdh;//排队号	
 	private String prsj;//排入时间
@@ -79,5 +85,6 @@ public class HaoMa {
 	private Integer dlId;//队列id
 	private String dlMc;//队列名称
 	private String ddId;//订单id
+	private String clCph;
 
 }

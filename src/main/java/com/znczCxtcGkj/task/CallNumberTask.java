@@ -5,12 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.znczCxtcGkj.entity.*;
+import com.znczCxtcGkj.led.LedUtil;
 import com.znczCxtcGkj.util.*;
 
 /**
@@ -52,15 +55,72 @@ public class CallNumberTask extends Thread {
 						long currTime = new Date().getTime();
 						// 900000 为15分钟的毫秒，
 						if ((ksjhsjTime + 900000) < currTime) {
-
+							//开始叫号时间如果和当前时间大于15分钟，那么此排号信息需要做过号处理
+							hm.setHmztMc(HaoMaZhuangTai.YI_GUO_HAO_TEXT);
+				        	APIUtil.editHaoMa(hm);
 							continue;
+						}
+						
+						String cph = hm.getClCph();
+						if (StringUtils.isBlank(cph)) {
+							logger.info("此订单没有找到车牌，订单id="+hm.getDdId());
+							// 发送播报信息， 此订单没有找到车牌号
+							continue;
+						}
+						else {
+							cphListDaiRuChang.add(cph);
+						}
+					}
+					else if(HaoMaZhuangTai.PAI_DUI_ZHONG_TEXT.equals(hmztMc)) {
+						String cph = hm.getClCph();
+						if (StringUtils.isBlank(cph)) {
+							logger.info("此订单没有找到车牌，订单id="+hm.getDdId());
+							// 发送播报信息， 此订单没有找到车牌号
+							continue;
+						}
+						else {
+							cphListPaiDuiZhong.add(cph);
 						}
 					}
 				}
+
+				logger.info("发送消息到LED");
+				sendMsgToMenGangLed(cphListDaiRuChang,cphListPaiDuiZhong);
+				
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 *  发送消息给门岗LED屏幕
+	 * @param cphListDaiRuChang
+	 * @param cphListPaiDuiZhong
+	 */
+	private static void sendMsgToMenGangLed(List<String> cphListDaiRuChang, List<String> cphListPaiDuiZhong) {
+		Map<String, String> contextMap = LedUtil.convertListToMenGangMsg(cphListDaiRuChang, cphListPaiDuiZhong);
+		String drcContext1 = contextMap.get("drcContext1").toString();
+		String drcContext2 = contextMap.get("drcContext2").toString();
+		String pdzContext1 = contextMap.get("pdzContext1").toString();
+		String pdzContext2 = contextMap.get("pdzContext2").toString();
+		
+		logger.info("开始发送车辆");
+		Integer sendProgram = LedUtil.sendProgramMultiLineToMenGang(LoadProperties.getLedIp(), 
+				LoadProperties.getLedFisTitleName(),
+				"      待入厂车辆",
+				drcContext1, 
+				drcContext2,
+				"      排队车辆",
+				pdzContext1, 
+				pdzContext2, 
+				"     禁止其他 车辆入厂");
+		
+		logger.info("发送车辆结束， 成功号码：  " + sendProgram);
+		
+		logger.info("成功号码： " + sendProgram);
+		logger.info("待入厂： " + drcContext1+" "+drcContext2);
+		logger.info("排队中： " + pdzContext1+" "+pdzContext2);
 	}
 }

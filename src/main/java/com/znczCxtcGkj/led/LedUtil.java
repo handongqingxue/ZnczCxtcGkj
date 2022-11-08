@@ -1,34 +1,98 @@
 package com.znczCxtcGkj.led;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.listenvision.led;
-import com.znczCxtcGkj.util.LoadProperties;
+import com.znczCxtcGkj.util.*;
 
-//灵信led屏工具类
+/**
+ * 灵信led屏工具类
+ * @author lenovo
+ *
+ */
 public class LedUtil {
+	
+	/**
+	 * 把待入厂和排队中的车牌号转换为门岗led屏上显示的内容格式
+	 * @param cphListDaiRuChang
+	 * @param cphListPaiDuiZhong
+	 * @return
+	 */
+	public static Map<String, String> convertListToMenGangMsg(List<String> cphListDaiRuChang, List<String> cphListPaiDuiZhong) {
+
+		Map<String, String> contextMap = new HashMap<String, String>();
+		
+		List<String> drcList = StringUtil.getListTo3(cphListDaiRuChang);
+		
+		String drcContext1 = null;
+		String drcContext2 = null;
+		for (int i = 0; i < drcList.size(); i++) {
+			String data = drcList.get(i);
+			if (i == 0) {
+				if (!StringUtils.isBlank(data)) {
+					drcContext1 = data;
+				}
+			}
+			if (i == 1) {
+				if (!StringUtils.isBlank(data)) {
+					drcContext2 = data;
+				}
+			}
+			if (i > 1) {
+				break;
+			}
+		}
+		
+		contextMap.put("drcContext1", drcContext1);
+		contextMap.put("drcContext2", drcContext2);
+		
+		List<String> paiduiList = StringUtil.getListTo3(cphListPaiDuiZhong);
+		
+		String pdzContext1 = null;
+		String pdzContext2 = null;
+		for (int i = 0; i < paiduiList.size(); i++) {
+			String data = paiduiList.get(i);
+			if (i == 0) {
+				if (!StringUtils.isBlank(data)) {
+					pdzContext1 = data;
+				}
+			}
+			if (i == 1) {
+				if (!StringUtils.isBlank(data)) {
+					pdzContext2 = data;
+				}
+			}
+			
+			if (i > 1) {
+				break;
+			}
+		}
+		
+		contextMap.put("pdzContext1", pdzContext1);
+		contextMap.put("pdzContext2", pdzContext2);
+		
+		return contextMap;
+	}
 	
 	/**
 	 * 发送内容到门岗屏幕, 192*192
 	 * @param IpStr
-	 * @param content1
-	 * @param content2
-	 * @param content3
-	 * @param content4
-	 * @param content5
-	 * @param content6
-	 * @param content7
-	 * @param content8
+	 * @param fisTitleName
+	 * @param drcTitle
+	 * @param drcContext1
+	 * @param drcContext2
+	 * @param pdzTitle
+	 * @param pdzContext1
+	 * @param pdzContext2
+	 * @param jzclContent
 	 * @return
 	 */
-	public static Integer sendProgramMultiLineToMenGang(String IpStr,String content1, 
-			String content2, 
-			String content3, 
-			String content4, 
-			String content5, 
-			String content6, 
-			String content7, 
-			String content8) {
+	public static Integer sendProgramMultiLineToMenGang(String IpStr,String fisTitleName, String drcTitle, String drcContext1,
+			String drcContext2, String pdzTitle, String pdzContext1, String pdzContext2, String jzclContent) {
 		int hProgram;
 		// 新建一个节目
 		hProgram=led.CreateProgram(192, 192, 1);
@@ -41,68 +105,63 @@ public class LedUtil {
 		String contentFontType = LoadProperties.getLedContentFontType();
 		Integer contentFontSize = LoadProperties.getLedContentFontSize();
 		
-		if (!StringUtils.isBlank(content1)) {
-//			绑定节目到LED屏幕
+		if (!StringUtils.isBlank(fisTitleName)) {
+			//绑定节目到LED屏幕
 			int addProgram = led.AddProgram(hProgram, 1, 500, 10);
-			// 新建字幕1
+			//新建字幕1
 			led.AddImageTextArea(hProgram, 1, 1, 0, 8, 192, 24, 1);
-//			// 为区域1 赋值
-			led.AddMultiLineTextToImageTextArea(hProgram, 1, 1, 0, content1, titleFontType, fisTitleSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-			
+			//为区域1赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 1, 0, fisTitleName, titleFontType, fisTitleSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
 		}
 		
-		   if (!StringUtils.isBlank(content2)) {
-			// 新建字幕2
-				led.AddImageTextArea(hProgram, 1, 2, 0, 38, 192, 16, 1);
-//				// 为区域2赋值
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 2, 0, content2, titleFontType, titleFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-				
-				
-			}
+		if (!StringUtils.isBlank(drcTitle)) {
+			//新建字幕2
+			led.AddImageTextArea(hProgram, 1, 2, 0, 38, 192, 16, 1);
+			//为区域2赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 2, 0, drcTitle, titleFontType, titleFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
 		
-		   if (!StringUtils.isBlank(content3)) {
-			// 新建字幕3
-				led.AddImageTextArea(hProgram, 1, 3, 0, 62, 192, 16, 1);
-				// 为区域3赋值
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 3, 0, content3, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-			}
+		if (!StringUtils.isBlank(drcContext1)) {
+			//新建字幕3
+			led.AddImageTextArea(hProgram, 1, 3, 0, 62, 192, 16, 1);
+			//为区域3赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 3, 0, drcContext1, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
 		   
-		   if (!StringUtils.isBlank(content4)) {
-			   // 新建字幕4
-				led.AddImageTextArea(hProgram, 1, 4, 0, 82, 192, 16, 1);
-				// 为区域4赋值
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 4, 0, content4, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-				
-				
-			}
+		if (!StringUtils.isBlank(drcContext2)) {
+			//新建字幕4
+			led.AddImageTextArea(hProgram, 1, 4, 0, 82, 192, 16, 1);
+			//为区域4赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 4, 0, drcContext2, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
 		
-		   if (!StringUtils.isBlank(content5)){
-			   // 新建字幕5
-				led.AddImageTextArea(hProgram, 1, 5, 0, 104, 192, 26, 1);
-				// 为区域5赋值
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 5, 0, content5, titleFontType, titleFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-			}
-		   if (!StringUtils.isBlank(content6)) {
-			   // 新建字幕6
-				led.AddImageTextArea(hProgram, 1, 6, 0, 130, 192, 16, 1);
-				// 为区域6赋值
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 6, 0, content6, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-			}
+		if (!StringUtils.isBlank(pdzTitle)){
+			//新建字幕5
+			led.AddImageTextArea(hProgram, 1, 5, 0, 104, 192, 26, 1);
+			//为区域5赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 5, 0, pdzTitle, titleFontType, titleFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
 		
-		   if (!StringUtils.isBlank(content7)) {
-
-			   // 新建字幕7
-				led.AddImageTextArea(hProgram, 1, 7, 0, 150, 192, 16, 1);
-				// 为区域7赋值
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 7, 0, content7, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-				
-			}
+		if (!StringUtils.isBlank(pdzContext1)) {
+			//新建字幕6
+			led.AddImageTextArea(hProgram, 1, 6, 0, 130, 192, 16, 1);
+			//为区域6赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 6, 0, pdzContext1, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
 		
-		   if (!StringUtils.isBlank(content8)) {
-				  // 新建字幕8， // 为区域8赋值
-				led.AddImageTextArea(hProgram, 1, 8, 0, 170, 192, 16, 1);
-				led.AddMultiLineTextToImageTextArea(hProgram, 1, 8, 0, content8, titleFontType, titleFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
-			}
+		if (!StringUtils.isBlank(pdzContext2)) {
+			//新建字幕7
+			led.AddImageTextArea(hProgram, 1, 7, 0, 150, 192, 16, 1);
+			//为区域7赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 7, 0, pdzContext2, contentFontType, contentFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
+		
+		if (!StringUtils.isBlank(jzclContent)) {
+			//新建字幕8
+			led.AddImageTextArea(hProgram, 1, 8, 0, 170, 192, 16, 1);
+			//为区域8赋值
+			led.AddMultiLineTextToImageTextArea(hProgram, 1, 8, 0, jzclContent, titleFontType, titleFontSize, 0xff, 0, 0, 0, 0, 4, 2, 0, 0);
+		}
 		
 		int netWorkSend = led.NetWorkSend(IpStr, hProgram);
 		System.out.println("netWorkSend==="+netWorkSend);
