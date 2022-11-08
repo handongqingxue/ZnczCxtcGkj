@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.znczCxtcGkj.entity.*;
 import com.znczCxtcGkj.led.LedUtil;
 import com.znczCxtcGkj.util.*;
+import com.znczCxtcGkj.yz.YinZhuUtil;
 
 /**
  * 叫号线程
@@ -86,7 +87,25 @@ public class CallNumberTask extends Thread {
 
 				logger.info("发送消息到LED");
 				sendMsgToMenGangLed(cphListDaiRuChang,cphListPaiDuiZhong);
-				
+
+				// 音柱播放
+				logger.info("开始播放音频");
+				for (String cphDaiRuChang : cphListDaiRuChang) {
+					try {
+						logger.info("发送音频83：请车牌号为");
+						YinZhuUtil.sendMsg(ModBusUtil.get83(), 1500);
+						char[] charCph = cphDaiRuChang.toCharArray();
+						for (char c : charCph) {
+							String valueOf = String.valueOf(c);
+							YinZhuUtil.sendMsg(ModBusUtil.getModBusChinese(valueOf), 800);
+						}
+						logger.info("发送音频81：的车辆入厂");
+						YinZhuUtil.sendMsg(ModBusUtil.get81(), 1500);
+					} catch (Exception e) {
+						logger.info("音柱播放错误" + e);
+						e.printStackTrace();
+					} 
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
