@@ -36,11 +36,11 @@ public class APIUtil {
 
 	//https://www.cnblogs.com/aeolian/p/7746158.html
 	//https://www.cnblogs.com/bobc/p/8809761.html
-	public static JSONObject doHttp(String method, Map<String, Object> params) throws IOException {
+	public static JSONObject doHttp(String method, Map<String, Object> paramMap) throws IOException {
 		// 构建请求参数  
         StringBuffer paramsSB = new StringBuffer();
-		if (params != null) {  
-            for (Entry<String, Object> e : params.entrySet()) {
+		if (paramMap != null) {  
+            for (Entry<String, Object> e : paramMap.entrySet()) {
             	paramsSB.append(e.getKey());  
             	paramsSB.append("=");  
             	paramsSB.append(e.getValue());  
@@ -89,12 +89,14 @@ public class APIUtil {
 	* @param fileMap
 	* @return
 	*/
-	public static JSONObject formUpload(String urlStr, Map textMap, Map fileMap) {
+	public static JSONObject formUpload(String method, Map textMap, Map fileMap) {
 		//https://blog.csdn.net/weixin_35674742/article/details/114192180
 		String result = null;
+		String urlStr = null;
 		HttpURLConnection conn = null;
 		String BOUNDARY = "---------------------------123821742118716"; //boundary就是request头和上传文件内容的分隔符
 		try {
+			urlStr=SERVICE_URL+method;
 			URL url = new URL(urlStr);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(5000);
@@ -117,6 +119,8 @@ public class APIUtil {
 					Map.Entry entry = (Entry) iter.next();
 					String inputName = (String) entry.getKey();
 					String inputValue = (String) entry.getValue();
+					//System.out.println("inputName="+inputName);
+					//System.out.println("inputValue="+inputValue);
 					if (inputValue == null) {
 						continue;
 					}
@@ -294,11 +298,16 @@ public class APIUtil {
 	public static JSONObject uploadCheLiangTaiZhang(CheLiangTaiZhang cltz,int actionFlag) {
 		JSONObject resultJO = null;
 		try {
-			Map parames = new HashMap<String, String>();
-	        parames.put("ddId", cltz.getDdId());
-	        parames.put("actionFlag", actionFlag);
-	        resultJO = doHttp("uploadCheLiangTaiZhang",parames);
-		} catch (IOException e) {
+			Map textMap = new HashMap<String, String>();
+			textMap.put("ddId", cltz.getDdId());
+			textMap.put("actionFlag", actionFlag);
+
+			Map fileMap = new HashMap<String, Object>();
+			String zpFilePath = "D:/wear/202211/IMG_20221105_120734.jpg";
+			fileMap.put("zp_file", zpFilePath);
+			
+	        resultJO = formUpload("uploadCheLiangTaiZhang",textMap,fileMap);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -314,12 +323,15 @@ public class APIUtil {
 		File file2 = new File(file2Path);
 		JSONObject resultJO = null;
 		try {
-			Map parames = new HashMap<String, Object>();
+			Map textMap = new HashMap<String, Object>();
+			textMap.put("jcsj", "1997-07-01");
+			
+			Map fileMap = new HashMap<String, Object>();
 			System.out.println("size1==="+file1.length());
 			System.out.println("size2==="+file2.length());
-	        parames.put("file1", file1Path);
-	        parames.put("file2", file2Path);
-	        formUpload(SERVICE_URL+"testFile",null,parames);
+			fileMap.put("file1", file1Path);
+			fileMap.put("file2", file2Path);
+			resultJO = formUpload("testFile",textMap,fileMap);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
