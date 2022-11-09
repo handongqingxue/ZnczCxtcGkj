@@ -214,13 +214,13 @@ public class APIUtil {
 		}
 	}
 
-	public static JSONObject getDingDanByCphZt(String cph, String ddztMc) {
+	public static JSONObject getDingDanByCphZts(String cph, String ddztMcs) {
 		JSONObject resultJO = null;
 		try {
 			Map parames = new HashMap<String, String>();
 	        parames.put("cph", cph);  
-	        parames.put("ddztMc", ddztMc);
-	        resultJO = doHttp("getDingDan",parames);
+	        parames.put("ddztMcs", ddztMcs);
+	        resultJO = doHttp("getDingDanByCphZts",parames);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,6 +230,7 @@ public class APIUtil {
 		}
 	}
 
+	/*
 	public static JSONObject getDingDan(String cph, String ddztMc) {
 		JSONObject resultJO = null;
 		try {
@@ -245,6 +246,7 @@ public class APIUtil {
 			return resultJO;
 		}
 	}
+	*/
 	
 	public static JSONObject editDingDan(DingDan dd) {
 		JSONObject resultJO = null;

@@ -384,7 +384,7 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
      * @param car
      */
     private void updateJCCPSBDDXX(Car car) {
-		JSONObject drcResultJO=APIUtil.getDingDan(car.getsLicense(),DingDanZhuangTai.DAI_RU_CHANG_TEXT);
+		JSONObject drcResultJO=APIUtil.getDingDanByCphZts(car.getsLicense(),DingDanZhuangTai.DAI_RU_CHANG_TEXT);
         if("ok".equals(drcResultJO.getString("status"))) {
 			JSONObject drcDdJO=drcResultJO.getJSONObject("dingDan");
 			long drcDdId = drcDdJO.getLong("id");
@@ -410,7 +410,7 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
 	 */
 	private void updateGBCPSBDDXX(Car car) {
 		JSONObject resultJO=null;
-		resultJO=APIUtil.getDingDan(car.getsLicense(),DingDanZhuangTai.YI_JIAN_DAI_SHANG_BANG_TEXT);
+		resultJO=APIUtil.getDingDanByCphZts(car.getsLicense(),DingDanZhuangTai.YI_JIAN_DAI_SHANG_BANG_TEXT);
 		if(resultJO!=null) {
 			int placeFlag = car.getPlaceFlag();
             if("ok".equals(resultJO.getString("status"))) {
@@ -428,7 +428,7 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
 				}
             }
             else {
-        		resultJO=APIUtil.getDingDan(car.getsLicense(),DingDanZhuangTai.ER_JIAN_DAI_SHANG_BANG_TEXT);
+        		resultJO=APIUtil.getDingDanByCphZts(car.getsLicense(),DingDanZhuangTai.ER_JIAN_DAI_SHANG_BANG_TEXT);
         		if(resultJO!=null) {
                     if("ok".equals(resultJO.getString("status"))) {
                 		//二检车辆识别
@@ -461,7 +461,7 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
     private void updateCCCPSBDDXX(Car car) {
     	//配置可离厂的状态,质检不合格、未打印凭证、已打印凭证等状态下的订单车辆都可离厂
     	String klcztStr=DingDanZhuangTai.DAI_JIAN_YAN_TEXT+","+DingDanZhuangTai.DAI_DA_YIN_PING_ZHENG_TEXT+","+DingDanZhuangTai.DAI_LI_CHANG_TEXT;
-		JSONObject drcResultJO=APIUtil.getDingDan(car.getsLicense(),klcztStr);
+		JSONObject drcResultJO=APIUtil.getDingDanByCphZts(car.getsLicense(),klcztStr);
         if("ok".equals(drcResultJO.getString("status"))) {
 			JSONObject drcDdJO=drcResultJO.getJSONObject("dingDan");
 			long drcDdId = drcDdJO.getLong("id");
