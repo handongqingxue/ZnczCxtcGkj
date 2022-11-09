@@ -17,9 +17,11 @@ import org.slf4j.LoggerFactory;
 public class LoadProperties {
 	static Logger logger = LoggerFactory.getLogger(LoadProperties.class);
 	private static Properties prop = null;
-	private static final int CURRENT_BF_NO=1;//1.托利多(新磅房) 2.耀华(旧磅房)
+	private static final int CURRENT_PLACE_FLAG=1;
 	private static final int YI_HAO_BANG_FANG=1;
 	private static final int ER_HAO_BANG_FANG=2;
+	private static final int SAN_HAO_BANG_FANG=3;
+	private static final int MEN_GANG=4;
 	private static final boolean IS_TEST=true;//是否是测试
 	//private static final boolean IS_TEST=false;//是否是测试
 
@@ -31,7 +33,7 @@ public class LoadProperties {
 		Properties prop = null;
 		try {
 			InputStream inputStream = null;
-			switch (CURRENT_BF_NO) {
+			switch (CURRENT_PLACE_FLAG) {
 			case YI_HAO_BANG_FANG:
 				if(IS_TEST)
 					inputStream = LoadProperties.class.getResourceAsStream("/config/configBf1.properties");

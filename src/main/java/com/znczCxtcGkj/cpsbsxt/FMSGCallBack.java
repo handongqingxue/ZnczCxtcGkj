@@ -191,13 +191,13 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
 				}
             	
             	if(ip.equals(hikvisionMGJCIP)) {
-            		
+            		updateJCCPSBDDXX(car);
             	} 
             	else if (ip.equals(hikvisionBFIP1)||ip.equals(hikvisionBFIP2)) {
             		updateGBCPSBDDXX(car);
             	} 
             	else if(ip.equals(hikvisionMGCCIP)) {
-            		
+            		updateCCCPSBDDXX(car);
             	} 
             	else {
             		System.out.println("车辆识别摄像头ip地址配置错误");
@@ -394,7 +394,9 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
         	dd.setDdztMc(DingDanZhuangTai.DAI_JIAN_YAN_TEXT);
         	JSONObject eddResultJO=APIUtil.editDingDan(dd);
         	if("ok".equals(eddResultJO.getString("message"))) {
-        		
+        		CheLiangTaiZhang cltz=new CheLiangTaiZhang();
+        		cltz.setDdId(drcDdId);
+        		APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.JIN_CHANG);
         	}
         }
         else {
@@ -450,6 +452,33 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
         		}
             }
 		}
+	}
+    
+    /**
+	 * 更新出厂识别车牌订单信息
+     * @param car
+     */
+    private void updateCCCPSBDDXX(Car car) {
+    	//配置可离厂的状态,质检不合格、未打印凭证、已打印凭证等状态下的订单车辆都可离厂
+    	String klcztStr=DingDanZhuangTai.DAI_JIAN_YAN_TEXT+","+DingDanZhuangTai.DAI_DA_YIN_PING_ZHENG_TEXT+","+DingDanZhuangTai.DAI_LI_CHANG_TEXT;
+		JSONObject drcResultJO=APIUtil.getDingDan(car.getsLicense(),klcztStr);
+        if("ok".equals(drcResultJO.getString("status"))) {
+			JSONObject drcDdJO=drcResultJO.getJSONObject("dingDan");
+			long drcDdId = drcDdJO.getLong("id");
+
+        	DingDan dd=new DingDan();
+        	dd.setId(drcDdId);
+        	dd.setDdztMc(DingDanZhuangTai.YI_WAN_CHENG_TEXT);
+        	JSONObject eddResultJO=APIUtil.editDingDan(dd);
+        	if("ok".equals(eddResultJO.getString("message"))) {
+        		CheLiangTaiZhang cltz=new CheLiangTaiZhang();
+        		cltz.setDdId(drcDdId);
+        		APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.CHU_CHANG);
+        	}
+        }
+        else {
+        	//没有找到车牌对应的订单信息，语音播报
+        }
 	}
 	
 	

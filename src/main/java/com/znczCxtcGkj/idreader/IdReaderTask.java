@@ -110,7 +110,7 @@ public class IdReaderTask extends Thread {
 							}
 							
 				        	DingDan dd=new DingDan();
-				        	dd.setId(ddJO.getInt("id"));
+				        	dd.setId(ddJO.getLong("id"));
 				        	dd.setDdztMc(DingDanZhuangTai.PAI_DUI_ZHONG_TEXT);
 				        	dd.setCkcs(ckcs);
 				        	APIUtil.editDingDan(dd);

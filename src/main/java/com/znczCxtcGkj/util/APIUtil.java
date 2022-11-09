@@ -17,8 +17,8 @@ import com.znczCxtcGkj.entity.*;
 
 public class APIUtil {
 
-	//public static final String SERVICE_URL="http://10.10.99.20:8080/ZnczCxtx/gkj/";
-	public static final String SERVICE_URL="http://localhost:8080/ZnczCxtx/gkj/";
+	//public static final String SERVICE_URL="http://10.10.99.20:8080/ZnczCxtc/gkj/";
+	public static final String SERVICE_URL="http://localhost:8080/ZnczCxtc/gkj/";
 	public static final int YI_HAO_BANG_FANG=1;
 	public static final int ER_HAO_BANG_FANG=2;
 	public static final int SAN_HAO_BANG_FANG=3;
@@ -53,7 +53,9 @@ public class APIUtil {
 		
 		OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(),"UTF-8"); 
 		//OutputStream writer = connection.getOutputStream(); 
-		writer.write(paramsSB.toString());
+		String paramsStr = paramsSB.toString();
+		//System.out.println("paramsStr==="+paramsStr);
+		writer.write(paramsStr);
 		writer.flush();
 		InputStream is = connection.getInputStream(); 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -158,6 +160,22 @@ public class APIUtil {
 	        parames.put("hmztMc", hm.getHmztMc());
 	        parames.put("ddId", hm.getDdId());
 	        resultJO = doHttp("editHaoMa",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
+	public static JSONObject uploadCheLiangTaiZhang(CheLiangTaiZhang cltz,int actionFlag) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("ddId", cltz.getDdId());
+	        parames.put("actionFlag", actionFlag);
+	        resultJO = doHttp("uploadCheLiangTaiZhang",parames);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
