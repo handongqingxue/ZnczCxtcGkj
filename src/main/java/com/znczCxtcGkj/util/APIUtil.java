@@ -1,6 +1,7 @@
 package com.znczCxtcGkj.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -183,5 +184,26 @@ public class APIUtil {
 		finally {
 			return resultJO;
 		}
+	}
+	
+	public static JSONObject testFile() {
+		File file = new File("D:/wear/202211/IMG_20221105_120734.jpg");
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, Object>();
+			System.out.println("size==="+file.length());
+	        parames.put("file", file);
+	        resultJO = doHttp("testFile",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
+	public static void main(String[] args) {
+		testFile();
 	}
 }
