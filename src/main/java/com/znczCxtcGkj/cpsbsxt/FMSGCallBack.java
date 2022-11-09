@@ -17,6 +17,8 @@ import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -24,16 +26,16 @@ import com.znczCxtcGkj.cpsbsxt.HCNetSDK.NET_DVR_ALARMER;
 import com.znczCxtcGkj.cpsbsxt.HCNetSDK.NET_DVR_PLATE_INFO;
 import com.znczCxtcGkj.cpsbsxt.HCNetSDK.RECV_ALARM;
 import com.znczCxtcGkj.entity.*;
-import com.znczCxtcGkj.util.APIUtil;
-import com.znczCxtcGkj.util.LoadProperties;
+import com.znczCxtcGkj.jdq.*;
+import com.znczCxtcGkj.util.*;
 
 /**
  * 	车辆识别回调函数
  * @author lhb
  *
  */
-public class FMSGCallBack implements HCNetSDK.FMSGCallBack
-{
+public class FMSGCallBack implements HCNetSDK.FMSGCallBack {
+	static Logger logger = LoggerFactory.getLogger(FMSGCallBack.class);
 	javax.swing.JTable jTableAlarm = new javax.swing.JTable();
 	
     //报警信息回调函数
@@ -396,7 +398,19 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
         	if("ok".equals(eddResultJO.getString("message"))) {
         		CheLiangTaiZhang cltz=new CheLiangTaiZhang();
         		cltz.setDdId(drcDdId);
-        		APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.JIN_CHANG);
+        		JSONObject resultJO = APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.JIN_CHANG);
+        		String message = resultJO.getString("message");
+        		if("ok".equals(message)) {
+		    		JdqZlUtil.openMenGangJdq();
+		        	JdqMGUtil.openJinChangDz();
+		    		JdqZlUtil.closeMenGangJdq();
+        		}
+        		else {
+        			logger.info("上传数据错误，请重新识别车牌");
+        		}
+        	}
+        	else {
+        		logger.info("修改订单状态错误，请重新识别车牌");
         	}
         }
         else {
@@ -473,7 +487,19 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack
         	if("ok".equals(eddResultJO.getString("message"))) {
         		CheLiangTaiZhang cltz=new CheLiangTaiZhang();
         		cltz.setDdId(drcDdId);
-        		APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.CHU_CHANG);
+        		JSONObject resultJO = APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.CHU_CHANG);
+        		String message = resultJO.getString("message");
+        		if("ok".equals(message)) {
+		    		JdqZlUtil.openMenGangJdq();
+		        	JdqMGUtil.openChuChangDz();
+		    		JdqZlUtil.closeMenGangJdq();
+        		}
+        		else {
+        			logger.info("上传数据错误，请重新识别车牌");
+        		}
+        	}
+        	else {
+        		logger.info("修改订单状态错误，请重新识别车牌");
         	}
         }
         else {
