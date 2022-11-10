@@ -98,7 +98,7 @@ public class IdReaderTask extends Thread {
 							// 可以进入厂区
 							if(ckcs==0) {
 								try {
-									ckcs = ckcs + 1;
+									ckcs = ckcs + 1;//打印二维码相当于出卡了，出卡次数加1
 									String ewm = ddJO.getString("ewm");
 									logger.info("二维码地址： " + ewm);
 									QrcodePrint.drawImage(ewm);

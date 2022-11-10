@@ -59,6 +59,12 @@ public class CallNumberTask extends Thread {
 							//开始叫号时间如果和当前时间大于15分钟，那么此排号信息需要做过号处理
 							hm.setHmztMc(HaoMaZhuangTai.YI_GUO_HAO_TEXT);
 				        	APIUtil.editHaoMa(hm);
+				        	
+				        	DingDan dd=new DingDan();
+							dd.setId(hm.getDdId());
+							dd.setDdztMc(DingDanZhuangTai.YI_XIA_DAN_TEXT);//一旦号码过号，订单状态改为已下单，得重新刷身份证排队才行
+							APIUtil.editDingDan(dd);
+							
 							continue;
 						}
 						

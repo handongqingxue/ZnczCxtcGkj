@@ -2,11 +2,11 @@ package com.znczCxtcGkj.entity;
 
 public class HaoMa {
 
-	private Integer id;//号码id
-	public Integer getId() {
+	private Long id;//号码id
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getHm() {
@@ -63,10 +63,10 @@ public class HaoMa {
 	public void setDlMc(String dlMc) {
 		this.dlMc = dlMc;
 	}
-	public String getDdId() {
+	public Long getDdId() {
 		return ddId;
 	}
-	public void setDdId(String ddId) {
+	public void setDdId(Long ddId) {
 		this.ddId = ddId;
 	}
 	public String getClCph() {
@@ -84,7 +84,7 @@ public class HaoMa {
 	private String ksjhsj;//开始叫号时间
 	private Integer dlId;//队列id
 	private String dlMc;//队列名称
-	private String ddId;//订单id
+	private Long ddId;//订单id
 	private String clCph;
 
 }
