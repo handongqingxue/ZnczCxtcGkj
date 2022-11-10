@@ -64,7 +64,7 @@ public class IdReaderTask extends Thread {
 					// 拿到身份证号， 可以在这里触发语音播报
 					logger.info("身份识别已成功请拿走身份证" + certNumber);
 					
-					// 根据身份证号查询已下单订单
+					//根据身份证号查询已下单订单start
 					org.json.JSONObject resultJO=APIUtil.getDingDanBySfzhZt(certNumber,DingDanZhuangTai.YI_XIA_DAN_TEXT);
 					String status = resultJO.getString("status");
 					if("ok".equals(status)) {
@@ -140,6 +140,7 @@ public class IdReaderTask extends Thread {
 						// 语音播报
 						logger.info("没有获取到当前用户的订单信息");
 					}
+					//根据身份证号查询已下单订单end
 				} else {
 					// 没有拿到身份证号， 可以在这里触发语音播报
 					logger.info("ip地址为： " + LoadProperties.getIp());
