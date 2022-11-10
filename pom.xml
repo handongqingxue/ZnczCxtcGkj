@@ -47,6 +47,7 @@
 		<artifactId>netty-all</artifactId>
 		<version>4.1.51.Final</version>
 	</dependency>
+	<!-- https://blog.csdn.net/love_hui_qiu/article/details/105453333-->
   	<dependency>
         <groupId>net.sf.jmimemagic</groupId>
         <artifactId>jmimemagic</artifactId>

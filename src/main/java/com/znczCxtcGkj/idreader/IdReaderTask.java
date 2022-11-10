@@ -109,11 +109,28 @@ public class IdReaderTask extends Thread {
 								}
 							}
 							
+							//更新订单状态为排队中
 				        	DingDan dd=new DingDan();
-				        	dd.setId(ddJO.getLong("id"));
+				        	long ddId = ddJO.getLong("id");
+				        	dd.setId(ddId);
 				        	dd.setDdztMc(DingDanZhuangTai.PAI_DUI_ZHONG_TEXT);
 				        	dd.setCkcs(ckcs);
-				        	APIUtil.editDingDan(dd);
+				        	org.json.JSONObject eddResultJO = APIUtil.editDingDan(dd);
+				        	if("ok".equals(eddResultJO.getString("message"))) {
+				        		//编辑订单成功
+				        		logger.info(eddResultJO.getString("info")+"状态为"+DingDanZhuangTai.PAI_DUI_ZHONG_TEXT);
+				        		//生成排号信息
+				        		org.json.JSONObject nhmResultJO = APIUtil.newHaoMa(ddId);
+					        	if("ok".equals(nhmResultJO.getString("message"))) {
+					        		logger.info(nhmResultJO.getString("info"));
+					        	}
+					        	else {
+					        		logger.info(nhmResultJO.getString("info"));
+					        	}
+				        	}
+				        	else {
+				        		logger.info(eddResultJO.getString("info"));
+				        	}
 						}
 						else {
 							logger.info("计划运输日期不准确");

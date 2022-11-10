@@ -280,6 +280,21 @@ public class APIUtil {
 		}
 	}
 	
+	public static JSONObject newHaoMa(Long ddId) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("ddId", ddId);  
+	        resultJO = doHttp("newHaoMa",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
 	public static JSONObject editHaoMa(HaoMa hm) {
 		JSONObject resultJO = null;
 		try {
