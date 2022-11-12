@@ -10,18 +10,12 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 
 import com.znczCxtcGkj.cpsbsxt.Car;
-import com.znczCxtcGkj.util.APIUtil;
-//import com.znczCxtcGkj.util.BangFang1Util;
-//import com.znczCxtcGkj.util.BangFang2Util;
-import com.znczCxtcGkj.util.LoadProperties;
+import com.znczCxtcGkj.util.*;
 
 import net.sf.json.JSONObject;
 
 public class ClientSocket implements Runnable {
 
-	public static final int YI_JIAN=1;
-	public static final int ER_JIAN=2;
-	public static final String PUSH_CPH="pushCph";
 	private OutputStreamWriter out;
 	private BufferedReader in;
 	private Socket socket;
@@ -67,7 +61,61 @@ public class ClientSocket implements Runnable {
 	}
 
 	private void readMessage(String mesJOStr) {
-		
+		System.out.println("mesJOStr==="+mesJOStr);
+		JSONObject mesJO = net.sf.json.JSONObject.fromObject(mesJOStr);
+		String action = mesJO.getString("action");
+		System.out.println("action==="+action);
+		int placeFlag = LoadProperties.getPlaceFlag();
+		System.out.println("placeFlag==="+placeFlag);
+		switch (action) {
+		case Constant.PUSH_CPH:
+			Car car1=new Car();
+			String cph = mesJO.getString("cph");
+			car1.setsLicense(" "+cph);
+			//地点可能是门岗或磅房，就得在最外层判断。这里与蓝帆医疗那边的判断逻辑不太一样，蓝帆那边只有磅房部署了程序，把一检或二检判断写在最外层。这里就得先判断地点，再判断哪个磅房
+			switch (placeFlag) {
+			case Constant.MEN_GANG:
+				
+				break;
+			case Constant.YI_HAO_BANG_FANG:
+				int yhbfJyFlag = mesJO.getInt("jyFlag");
+				System.out.println("yhbfJyFlag==="+yhbfJyFlag);
+				switch (yhbfJyFlag) {
+				case Constant.YI_JIAN:
+					//BangFang1Util.updateYJCPSBDDXX(car1);
+					break;
+				case Constant.ER_JIAN:
+					//BangFang1Util.updateEJCPSBDDXX(car1);
+					break;
+				}
+				break;
+			case Constant.ER_HAO_BANG_FANG:
+				int ehbfJyFlag = mesJO.getInt("jyFlag");
+				System.out.println("ehbfJyFlag==="+ehbfJyFlag);
+				switch (ehbfJyFlag) {
+				case Constant.YI_JIAN:
+					//BangFang2Util.updateYJCPSBDDXX(car1);
+					break;
+				case Constant.ER_JIAN:
+					//BangFang2Util.updateEJCPSBDDXX(car1);
+					break;
+				}
+				break;
+			case Constant.SAN_HAO_BANG_FANG:
+				int shbfJyFlag = mesJO.getInt("jyFlag");
+				System.out.println("shbfJyFlag==="+shbfJyFlag);
+				switch (shbfJyFlag) {
+				case Constant.YI_JIAN:
+					//BangFang3Util.updateYJCPSBDDXX(car1);
+					break;
+				case Constant.ER_JIAN:
+					//BangFang3Util.updateEJCPSBDDXX(car1);
+					break;
+				}
+				break;
+			}
+			break;
+		}
 	}
 	
 	private void sendName(){

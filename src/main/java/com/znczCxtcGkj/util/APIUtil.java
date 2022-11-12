@@ -27,13 +27,6 @@ import com.znczCxtcGkj.entity.*;
 
 public class APIUtil {
 
-	//public static final String SERVICE_URL="http://10.10.99.20:8080/ZnczCxtc/gkj/";
-	public static final String SERVICE_URL="http://localhost:8080/ZnczCxtc/gkj/";
-	public static final int YI_HAO_BANG_FANG=1;
-	public static final int ER_HAO_BANG_FANG=2;
-	public static final int SAN_HAO_BANG_FANG=3;
-	public static final int MEN_GANG=4;
-
 	//https://www.cnblogs.com/aeolian/p/7746158.html
 	//https://www.cnblogs.com/bobc/p/8809761.html
 	public static JSONObject doHttp(String method, Map<String, Object> paramMap) throws IOException {
@@ -51,7 +44,7 @@ public class APIUtil {
 		
 		StringBuffer sbf = new StringBuffer(); 
 		String strRead = null; 
-		URL url = new URL(SERVICE_URL+method);
+		URL url = new URL(Constant.SERVICE_URL+method);
 		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		connection.setRequestMethod("POST");//请求post方式
 		connection.setDoInput(true); 
@@ -96,7 +89,7 @@ public class APIUtil {
 		HttpURLConnection conn = null;
 		String BOUNDARY = "---------------------------123821742118716"; //boundary就是request头和上传文件内容的分隔符
 		try {
-			urlStr=SERVICE_URL+method;
+			urlStr=Constant.SERVICE_URL+method;
 			URL url = new URL(urlStr);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(5000);
