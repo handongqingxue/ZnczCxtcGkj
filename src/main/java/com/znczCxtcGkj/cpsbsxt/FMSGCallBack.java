@@ -183,12 +183,12 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack {
             	String hikvisionBFIP2=null;
 
             	switch (placeFlag) {
-				case APIUtil.YI_HAO_BANG_FANG:
-				case APIUtil.ER_HAO_BANG_FANG:
+				case Constant.YI_HAO_BANG_FANG:
+				case Constant.ER_HAO_BANG_FANG:
 					hikvisionBFIP1=LoadProperties.getHikvisionEastIP();//东车辆识别摄像头
 					hikvisionBFIP2=LoadProperties.getHikvisionWestIP();//西车辆识别摄像头
 					break;
-				case APIUtil.SAN_HAO_BANG_FANG:
+				case Constant.SAN_HAO_BANG_FANG:
 					break;
 				}
             	
@@ -440,13 +440,13 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack {
             if("ok".equals(resultJO.getString("status"))) {
         		//一检车辆识别
             	switch (placeFlag) {
-				case APIUtil.YI_HAO_BANG_FANG:
+				case Constant.YI_HAO_BANG_FANG:
 					//BangFang1Util.updateYJCPSBDDXX(car);
 					break;
-				case APIUtil.ER_HAO_BANG_FANG:
+				case Constant.ER_HAO_BANG_FANG:
 					//BangFang2Util.updateYJCPSBDDXX(car);
 					break;
-				case APIUtil.SAN_HAO_BANG_FANG:
+				case Constant.SAN_HAO_BANG_FANG:
 					//BangFang3Util.updateYJCPSBDDXX(car);
 					break;
 				}
@@ -457,13 +457,13 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack {
                     if("ok".equals(resultJO.getString("status"))) {
                 		//二检车辆识别
                     	switch (placeFlag) {
-						case APIUtil.YI_HAO_BANG_FANG:
+						case Constant.YI_HAO_BANG_FANG:
 	                    	//BangFang1Util.updateEJCPSBDDXX(car);
 							break;
-						case APIUtil.ER_HAO_BANG_FANG:
+						case Constant.ER_HAO_BANG_FANG:
 							//BangFang2Util.updateEJCPSBDDXX(car);
 							break;
-						case APIUtil.SAN_HAO_BANG_FANG:
+						case Constant.SAN_HAO_BANG_FANG:
 							//BangFang3Util.updateEJCPSBDDXX(car);
 							break;
 						}
