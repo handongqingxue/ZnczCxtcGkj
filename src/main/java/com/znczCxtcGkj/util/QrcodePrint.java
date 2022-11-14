@@ -143,7 +143,8 @@ public class QrcodePrint {
 		}
 		InputStream fin = null;
 		try {
-			fin = new FileUpload().getPngFile(LoadProperties.getBaseUrl() + "/v2/files/text/" + url+ "?@token=b6664308b9b64534881c4387c51e653a");
+			fin = new FileUpload().getPngFile(url);
+			//fin = new FileUpload().getPngFile(LoadProperties.getBaseUrl() + "/v2/files/text/" + url+ "?@token=b6664308b9b64534881c4387c51e653a");
 			drawImage(fin);
 		} catch (Exception e) {
 			e.printStackTrace();

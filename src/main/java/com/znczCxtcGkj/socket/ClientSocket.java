@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 
 import com.znczCxtcGkj.cpsbsxt.Car;
+import com.znczCxtcGkj.idreader.IdReaderUtil;
 import com.znczCxtcGkj.util.*;
 
 import net.sf.json.JSONObject;
@@ -114,6 +115,10 @@ public class ClientSocket implements Runnable {
 				}
 				break;
 			}
+			break;
+		case Constant.PUSH_SFZH:
+			String sfzh = mesJO.getString("sfzh");
+			IdReaderUtil.paiDuiBySfzh(sfzh);
 			break;
 		}
 	}
