@@ -56,18 +56,19 @@ public class IdReaderUtil {
 			client.run(url, get, handler);
 
 			// Thread.sleep(10000);
-			logger.debug("the result:{}", handler.getResult());
+			//logger.debug("the result:{}", handler.getResult());
+			System.out.println("the result:{}"+handler.getResult());
 			
 			String result = handler.getResult();
 			JSONObject parseObject = JSON.parseObject(result);
 			// 姓名
 			Integer resultFlag = (Integer) parseObject.get("resultFlag");
 			if (resultFlag == 0) {
-				logger.info("链接身份证读卡器成功 ");
+				System.out.println("链接身份证读卡器成功 ");
 				flag = true;
 			} else {
 				String errorMsg = (String) parseObject.get("errorMsg");
-				logger.info("链接身份证读卡器失败： ", errorMsg);
+				System.out.println("链接身份证读卡器失败： "+errorMsg);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,16 +127,10 @@ public class IdReaderUtil {
 			String status = resultJO.getString("status");
 			if("ok".equals(status)) {
 				// 根据获取到订单信息，改变订单状态，并进行发卡(打印二维码)
-				logger.debug("===========根据司机身份证号查询的订单信息============");
-				logger.debug(resultJO.toString());
+				System.out.println("===========根据司机身份证号查询的订单信息============");
+				System.out.println(resultJO.toString());
 				org.json.JSONObject ddJO=resultJO.getJSONObject("dingDan");
-				String ckcsStr = ddJO.getString("ckcs");
-				Integer ckcs = null;
-				if (StringUtils.isBlank(ckcsStr)) {
-					ckcs = 0;
-				} else {
-					ckcs = Integer.parseInt(ckcsStr);
-				}
+				int ckcs = ddJO.getInt("ckcs");
 				
 				String jhysrq = ddJO.getString("jhysrq");
 				DateUtil dateUtil = new DateUtil();
@@ -151,17 +146,19 @@ public class IdReaderUtil {
 
 				// 可以进入的最大时间
 				long endTime = jhysrqTime + DateUtil.getTime(LoadProperties.getIntoTheFactoryDate());
-				if (jhysrqTime <= currentTime && currentTime <= endTime) {
+				//if (jhysrqTime <= currentTime && currentTime <= endTime) {
 					// 可以进入厂区
 					if(ckcs==0) {
 						try {
 							ckcs = ckcs + 1;//打印二维码相当于出卡了，出卡次数加1
-							String ewm = ddJO.getString("ewm");
-							logger.info("二维码地址： " + ewm);
-							QrcodePrint.drawImage(ewm);
+							String serverIp = LoadProperties.getServerIp();
+							String tomcatPort = LoadProperties.getTomcatPort();
+							String ewm = "http://"+serverIp+":"+tomcatPort+ddJO.getString("ewm");
+							System.out.println("二维码地址： " + ewm);
+							//QrcodePrint.drawImage(ewm);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							logger.info("打印机打印二维码出错");
+							System.out.println("打印机打印二维码出错");
 							e.printStackTrace();
 						}
 					}
@@ -175,27 +172,27 @@ public class IdReaderUtil {
 			    	org.json.JSONObject eddResultJO = APIUtil.editDingDan(dd);
 			    	if("ok".equals(eddResultJO.getString("message"))) {
 			    		//编辑订单成功
-			    		logger.info(eddResultJO.getString("info")+"状态为"+DingDanZhuangTai.PAI_DUI_ZHONG_TEXT);
+			    		System.out.println(eddResultJO.getString("info")+"状态为"+DingDanZhuangTai.PAI_DUI_ZHONG_TEXT);
 			    		//生成排号信息
 			    		org.json.JSONObject nhmResultJO = APIUtil.newHaoMa(ddId);
 			        	if("ok".equals(nhmResultJO.getString("message"))) {
-			        		logger.info(nhmResultJO.getString("info"));
+			        		System.out.println(nhmResultJO.getString("info"));
 			        	}
 			        	else {
-			        		logger.info(nhmResultJO.getString("info"));
+			        		System.out.println(nhmResultJO.getString("info"));
 			        	}
 			    	}
 			    	else {
-			    		logger.info(eddResultJO.getString("info"));
+			    		System.out.println(eddResultJO.getString("info"));
 			    	}
-				}
-				else {
-					logger.info("计划运输日期不准确");
-				}
+				//}
+				//else {
+					//System.out.println("计划运输日期不准确");
+				//}
 			}
 			else {
 				// 语音播报
-				logger.info("没有获取到当前用户的订单信息");
+				System.out.println("没有获取到当前用户的订单信息");
 			}
 			//根据身份证号进入排队中end
 		} catch (Exception e) {

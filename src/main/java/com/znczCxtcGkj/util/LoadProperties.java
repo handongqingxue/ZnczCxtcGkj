@@ -17,11 +17,7 @@ import org.slf4j.LoggerFactory;
 public class LoadProperties {
 	static Logger logger = LoggerFactory.getLogger(LoadProperties.class);
 	private static Properties prop = null;
-	private static final int CURRENT_PLACE_FLAG=1;
-	private static final int YI_HAO_BANG_FANG=1;
-	private static final int ER_HAO_BANG_FANG=2;
-	private static final int SAN_HAO_BANG_FANG=3;
-	private static final int MEN_GANG=4;
+	private static final int CURRENT_PLACE_FLAG=Constant.MEN_GANG;
 	private static final boolean IS_TEST=true;//是否是测试
 	//private static final boolean IS_TEST=false;//是否是测试
 
@@ -34,17 +30,29 @@ public class LoadProperties {
 		try {
 			InputStream inputStream = null;
 			switch (CURRENT_PLACE_FLAG) {
-			case YI_HAO_BANG_FANG:
+			case Constant.YI_HAO_BANG_FANG:
 				if(IS_TEST)
 					inputStream = LoadProperties.class.getResourceAsStream("/config/configBf1.properties");
 				else
 					inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("configBf1.properties");
 				break;
-			case ER_HAO_BANG_FANG:
+			case Constant.ER_HAO_BANG_FANG:
 				if(IS_TEST)
 					inputStream = LoadProperties.class.getResourceAsStream("/config/configBf2.properties");
 				else
 					inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("configBf2.properties");
+				break;
+			case Constant.SAN_HAO_BANG_FANG:
+				if(IS_TEST)
+					inputStream = LoadProperties.class.getResourceAsStream("/config/configBf3.properties");
+				else
+					inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("configBf3.properties");
+				break;
+			case Constant.MEN_GANG:
+				if(IS_TEST)
+					inputStream = LoadProperties.class.getResourceAsStream("/config/configMg.properties");
+				else
+					inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("configMg.properties");
 				break;
 			}
 			System.out.println("inputStream==="+inputStream);
@@ -647,6 +655,40 @@ public class LoadProperties {
 		String trim = prop.getProperty("serverIp").trim();
 		if (StringUtils.isBlank(trim)) {
 			logger.debug("请在配置文件中配置serverIp");
+			return null;
+		}
+		
+		return trim;
+	}
+	
+	/**
+	 * 获得tomcat端口号
+	 * @return
+	 */
+	public static String getTomcatPort() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("tomcatPort").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置tomcatPort");
+			return null;
+		}
+		
+		return trim;
+	}
+	
+	/**
+	 * 获得socket端口号
+	 * @return
+	 */
+	public static String getSocketPort() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("socketPort").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置socketPort");
 			return null;
 		}
 		

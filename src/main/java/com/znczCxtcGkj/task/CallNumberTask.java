@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import com.znczCxtcGkj.yz.YinZhuUtil;
  *
  */
 public class CallNumberTask extends Thread {
-	static Logger logger = LoggerFactory.getLogger(CallNumberTask.class);
+	//static Logger logger = LoggerFactory.getLogger(CallNumberTask.class);
 
 	@Override
 	public void run() {
@@ -37,11 +38,11 @@ public class CallNumberTask extends Thread {
 				org.json.JSONObject resultJO=APIUtil.getJhPdHMList();
 				String status = resultJO.getString("status");
 				if("no".equals(status)) {
-					logger.info("目前没有需要叫号中和排队中的车辆");
+					System.out.println("目前没有需要叫号中和排队中的车辆");
 					continue;
 				}
 				List<HaoMa> hmList=(List<HaoMa>)resultJO.get("hmList");
-				logger.info("待叫号和排队中的数量为:" + hmList.size());
+				System.out.println("待叫号和排队中的数量为:" + hmList.size());
 				
 				// 存放正在叫号中的车牌号
 				List<String>  cphListDaiRuChang  = new ArrayList<String>();
@@ -70,7 +71,7 @@ public class CallNumberTask extends Thread {
 						
 						String cph = hm.getClCph();
 						if (StringUtils.isBlank(cph)) {
-							logger.info("此订单没有找到车牌，订单id="+hm.getDdId());
+							System.out.println("此订单没有找到车牌，订单id="+hm.getDdId());
 							// 发送播报信息， 此订单没有找到车牌号
 							continue;
 						}
@@ -81,7 +82,7 @@ public class CallNumberTask extends Thread {
 					else if(HaoMaZhuangTai.PAI_DUI_ZHONG_TEXT.equals(hmztMc)) {
 						String cph = hm.getClCph();
 						if (StringUtils.isBlank(cph)) {
-							logger.info("此订单没有找到车牌，订单id="+hm.getDdId());
+							System.out.println("此订单没有找到车牌，订单id="+hm.getDdId());
 							// 发送播报信息， 此订单没有找到车牌号
 							continue;
 						}
@@ -91,24 +92,34 @@ public class CallNumberTask extends Thread {
 					}
 				}
 
-				logger.info("发送消息到LED");
+				System.out.println("发送消息到LED");
+				/*
+				 * 先注释掉，等到现场后再打开
 				sendMsgToMenGangLed(cphListDaiRuChang,cphListPaiDuiZhong);
+				*/
 
 				// 音柱播放
-				logger.info("开始播放音频");
+				System.out.println("开始播放音频");
 				for (String cphDaiRuChang : cphListDaiRuChang) {
 					try {
-						logger.info("发送音频83：请车牌号为");
+						System.out.println("发送音频83：请车牌号为");
 						YinZhuUtil.sendMsg(ModBusUtil.get83(), 1500);
 						char[] charCph = cphDaiRuChang.toCharArray();
 						for (char c : charCph) {
 							String valueOf = String.valueOf(c);
+							System.out.println(valueOf);
+							/*
+							 * 先注释掉，等到现场后再打开
 							YinZhuUtil.sendMsg(ModBusUtil.getModBusChinese(valueOf), 800);
+							 */
 						}
-						logger.info("发送音频81：的车辆入厂");
+						System.out.println("发送音频81：的车辆入厂");
+						/*
+						 * 先注释掉，等到现场后再打开
 						YinZhuUtil.sendMsg(ModBusUtil.get81(), 1500);
+						 */
 					} catch (Exception e) {
-						logger.info("音柱播放错误" + e);
+						System.out.println("音柱播放错误" + e);
 						e.printStackTrace();
 					} 
 				}
@@ -131,7 +142,7 @@ public class CallNumberTask extends Thread {
 		String pdzContext1 = contextMap.get("pdzContext1").toString();
 		String pdzContext2 = contextMap.get("pdzContext2").toString();
 		
-		logger.info("开始发送车辆");
+		System.out.println("开始发送车辆");
 		Integer sendProgram = LedUtil.sendProgramMultiLineToMenGang(LoadProperties.getLedIp(), 
 				LoadProperties.getLedFisTitleName(),
 				"      待入厂车辆",
@@ -142,10 +153,10 @@ public class CallNumberTask extends Thread {
 				pdzContext2, 
 				"     禁止其他 车辆入厂");
 		
-		logger.info("发送车辆结束， 成功号码：  " + sendProgram);
+		System.out.println("发送车辆结束， 成功号码：  " + sendProgram);
 		
-		logger.info("成功号码： " + sendProgram);
-		logger.info("待入厂： " + drcContext1+" "+drcContext2);
-		logger.info("排队中： " + pdzContext1+" "+pdzContext2);
+		System.out.println("成功号码： " + sendProgram);
+		System.out.println("待入厂： " + drcContext1+" "+drcContext2);
+		System.out.println("排队中： " + pdzContext1+" "+pdzContext2);
 	}
 }
