@@ -1,4 +1,4 @@
-package com.znczCxtcGkj.util;
+package com.znczCxtcGkj.print;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.znczCxtcGkj.netty.FileUpload;
+import com.znczCxtcGkj.util.APIUtil;
 
 //执行打印时需要导入commons-io-1.4.jar
 /**
@@ -39,6 +39,11 @@ public class QrcodePrint {
 
 	static Logger logger = LoggerFactory.getLogger(QrcodePrint.class);
 
+	/**
+	 * 根据图片本地路径打印出图片(用于打印本地图片)
+	 * @param fileName
+	 * @param count
+	 */
 	public static void drawImage(String fileName, int count) {
 		//https://www.cnblogs.com/Java-Starter/p/9283575.html
 		FileInputStream fin = null;
@@ -135,7 +140,7 @@ public class QrcodePrint {
 	}
 	
 	/**
-	 * 	根据图片url 打印出图片信息
+	 * 	根据图片url 打印出图片信息(用于打印网络图片)
 	 * @param url
 	 */
 	public static void drawImage(String url) {
@@ -144,8 +149,7 @@ public class QrcodePrint {
 		}
 		InputStream fin = null;
 		try {
-			fin = new FileUpload().getPngFile(url);
-			//fin = new FileUpload().getPngFile(LoadProperties.getBaseUrl() + "/v2/files/text/" + url+ "?@token=b6664308b9b64534881c4387c51e653a");
+			fin = APIUtil.getPngFile(url);
 			drawImage(fin);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -164,8 +168,9 @@ public class QrcodePrint {
 
 	public static void main(String[] args) {
 		//String fileName="D:/resource/ZnczCxtc/CheLiang/Zp/1667615487681.jpg";
-		String fileName="http://localhost:8080/ZnczCxtc/upload/CheLiang/Xsz/1667615487818.jpg";
-		QrcodePrint.drawImage(fileName, 1);
+		//QrcodePrint.drawImage(fileName, 1);
+		String fileName="http://localhost:8080/ZnczCxtc/upload/CheLiang/Xsz/1665128472945.jpg";
+		QrcodePrint.drawImage(fileName);
 //		try {
 //			FileInputStream fin = new FileInputStream("D:/3dcode.png");
 //			byte[] byt = new byte[fin.available()];

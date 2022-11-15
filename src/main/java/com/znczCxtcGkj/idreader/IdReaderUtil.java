@@ -16,6 +16,7 @@ import com.znczCxtcGkj.entity.DingDan;
 import com.znczCxtcGkj.entity.DingDanZhuangTai;
 import com.znczCxtcGkj.netty.HttpClient;
 import com.znczCxtcGkj.netty.HttpClientHandler;
+import com.znczCxtcGkj.print.QrcodePrint;
 import com.znczCxtcGkj.util.*;
 
 import io.netty.handler.codec.http.HttpRequest;

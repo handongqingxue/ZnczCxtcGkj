@@ -29,6 +29,11 @@ import com.znczCxtcGkj.entity.*;
 
 public class APIUtil {
 	
+	/**
+	 * 根据文件路径获取文件输入流
+	 * @param spec
+	 * @return
+	 */
 	public static InputStream getPngFile(String spec) {
 		InputStream is = null;
 		try {
