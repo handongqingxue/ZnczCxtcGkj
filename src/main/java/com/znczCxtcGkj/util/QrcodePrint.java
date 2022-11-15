@@ -40,6 +40,7 @@ public class QrcodePrint {
 	static Logger logger = LoggerFactory.getLogger(QrcodePrint.class);
 
 	public static void drawImage(String fileName, int count) {
+		//https://www.cnblogs.com/Java-Starter/p/9283575.html
 		FileInputStream fin = null;
 		try {
 			DocFlavor dof = null;
@@ -162,7 +163,9 @@ public class QrcodePrint {
 	
 
 	public static void main(String[] args) {
-		// new QrcodePrint().drawImage("D:/3dcode.png", 1);
+		//String fileName="D:/resource/ZnczCxtc/CheLiang/Zp/1667615487681.jpg";
+		String fileName="http://localhost:8080/ZnczCxtc/upload/CheLiang/Xsz/1667615487818.jpg";
+		QrcodePrint.drawImage(fileName, 1);
 //		try {
 //			FileInputStream fin = new FileInputStream("D:/3dcode.png");
 //			byte[] byt = new byte[fin.available()];
@@ -175,9 +178,9 @@ public class QrcodePrint {
 //		}
 //		drawImage("download-files/f08a9df6e273d40eeebaf08d839f9008/3dcode.png");
 		
-		String url = "./download-files/f08a9df6e273d40eeebaf08d839f9008/3dcode.png";
+		//String url = "./download-files/f08a9df6e273d40eeebaf08d839f9008/3dcode.png";
 		
-		System.out.println("[" + url.substring(1, url.length()) + "]");
+		//System.out.println("[" + url.substring(1, url.length()) + "]");
 		
 	}
 }

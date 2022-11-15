@@ -22,6 +22,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.znczCxtcGkj.util.*;
+
 import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder.ErrorDataEncoderException;
 
 /**
@@ -163,10 +165,10 @@ public class FileUpload {
 	
 	public static InputStream getPngFile(String url) {
         HttpGet httpGet = new HttpGet(url);
-        httpGet.setHeader("userName", "admin");
-	    httpGet.setHeader("hydrocarbon-token", "b6664308b9b64534881c4387c51e653a");
-	    httpGet.setHeader("tokenTime", "2020-08-30");
-	    httpGet.setHeader("depth", "2");
+        //httpGet.setHeader("userName", "admin");
+	    //httpGet.setHeader("hydrocarbon-token", "b6664308b9b64534881c4387c51e653a");
+	    //httpGet.setHeader("tokenTime", "2020-08-30");
+	   //httpGet.setHeader("depth", "2");
 	    HttpEntity resultEntity = null;
        
         HttpResponse response;
@@ -205,10 +207,10 @@ public class FileUpload {
 	
 	public static void main(String[] args) {
 		
-		FileUpload fileUpload = new FileUpload();
-		InputStream pngFile = FileUpload.getPngFile("http://112.6.41.8:90/hydrogen/v2/files/text/zncze2776/5507fe4688eee4b9795cdbb7ae83b151/二维码文件.png?@token=b6664308b9b64534881c4387c51e653a");
-		
-		System.out.println();
+		//FileUpload fileUpload = new FileUpload();
+		//InputStream pngFile = FileUpload.getPngFile("http://112.6.41.8:90/hydrogen/v2/files/text/zncze2776/5507fe4688eee4b9795cdbb7ae83b151/二维码文件.png?@token=b6664308b9b64534881c4387c51e653a");
+		InputStream pngFile = APIUtil.getPngFile("http://localhost:8080/ZnczCxtc/upload/CheLiang/Xsz/1667615487818.jpg");
+		QrcodePrint.drawImage(pngFile);
 	}
 
 }

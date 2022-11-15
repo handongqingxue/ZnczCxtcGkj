@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +28,27 @@ import org.json.JSONObject;
 import com.znczCxtcGkj.entity.*;
 
 public class APIUtil {
+	
+	public static InputStream getPngFile(String spec) {
+		InputStream is = null;
+		try {
+			URL url = new URL(spec);
+			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			connection.setRequestMethod("GET");//请求GET方式
+			connection.setDoInput(true); 
+			connection.setDoOutput(true); 
+			//header内的的参数在这里set    
+			//connection.setRequestProperty("key", "value");
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			connection.connect(); 
+			
+			is = connection.getInputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return is;
+	}
 
 	//https://www.cnblogs.com/aeolian/p/7746158.html
 	//https://www.cnblogs.com/bobc/p/8809761.html
