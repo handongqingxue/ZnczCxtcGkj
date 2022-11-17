@@ -138,8 +138,8 @@ public class APIUtil {
 				Iterator iter = textMap.entrySet().iterator();
 				while (iter.hasNext()) {
 					Map.Entry entry = (Entry) iter.next();
-					String inputName = (String) entry.getKey();
-					String inputValue = (String) entry.getValue();
+					String inputName = entry.getKey().toString();
+					String inputValue = entry.getValue().toString();
 					//System.out.println("inputName="+inputName);
 					//System.out.println("inputValue="+inputValue);
 					if (inputValue == null) {
@@ -322,6 +322,8 @@ public class APIUtil {
 			Map parames = new HashMap<String, String>();
 	        parames.put("id", hm.getId());
 	        parames.put("hmztMc", hm.getHmztMc());
+	        parames.put("ksjhsj", hm.getKsjhsj());
+	        parames.put("jhcs", hm.getJhcs());
 	        parames.put("ddId", hm.getDdId());
 	        resultJO = doHttp("editHaoMa",parames);
 		} catch (IOException e) {
@@ -341,7 +343,8 @@ public class APIUtil {
 			textMap.put("actionFlag", actionFlag);
 
 			Map fileMap = new HashMap<String, Object>();
-			String zpFilePath = "D:/wear/202211/IMG_20221105_120734.jpg";
+			//String zpFilePath = "D:/wear/202211/IMG_20221105_120734.jpg";
+			String zpFilePath = "F:/我的文件/本少爷的穿着打扮/202211/IMG_20221113_192733.jpg";
 			fileMap.put("zp_file", zpFilePath);
 			
 	        resultJO = formUpload("uploadCheLiangTaiZhang",textMap,fileMap);
@@ -355,9 +358,11 @@ public class APIUtil {
 	}
 	
 	public static JSONObject testFile() {
-		String file1Path = "D:/wear/202211/IMG_20221105_120734.jpg";
+		//String file1Path = "D:/wear/202211/IMG_20221105_120734.jpg";
+		String file1Path = "F:/我的文件/本少爷的穿着打扮/IMG_20221113_192733.jpg";
 		File file1 = new File(file1Path);
-		String file2Path = "D:/wear/202211/IMG_20221104_200132.jpg";
+		//String file2Path = "D:/wear/202211/IMG_20221104_200132.jpg";
+		String file2Path = "F:/我的文件/本少爷的穿着打扮/IMG_20221113_192733.jpg";
 		File file2 = new File(file2Path);
 		JSONObject resultJO = null;
 		try {

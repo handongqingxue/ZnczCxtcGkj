@@ -53,13 +53,19 @@ public class CallNumberTask extends Thread {
 				for (HaoMa hm : hmList) {
 					String hmztMc = hm.getHmztMc();
 					if(HaoMaZhuangTai.JIAO_HAO_ZHONG_TEXT.equals(hmztMc)) {
+						DateUtil ksjhsjDU = new DateUtil("yyyy-MM-dd HH:mm:ss");
+						
 						String ksjhsj = hm.getKsjhsj();
 						Long ksjhsjTime = null;
 						if (StringUtils.isBlank(ksjhsj)) {
 							// 若没有开始叫号时间
-							ksjhsjTime = new Date().getTime();
+							Date ksjhsjDate = new Date();
+							ksjhsjTime = ksjhsjDate.getTime();
+							ksjhsj=ksjhsjDU.format(ksjhsjDate);
+							hm.setKsjhsj(ksjhsj);
 						} else { 
-							ksjhsjTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ksjhsj).getTime();
+							//ksjhsjTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ksjhsj).getTime();
+							ksjhsjTime = ksjhsjDU.parse(ksjhsj).getTime();
 						}
 						
 						long currTime = new Date().getTime();
@@ -86,6 +92,9 @@ public class CallNumberTask extends Thread {
 						}
 						else {
 							cphListDaiRuChang.add(cph);
+							int jhcs = hm.getJhcs();
+							hm.setJhcs(++jhcs);
+				        	APIUtil.editHaoMa(hm);
 						}
 					}
 					else if(HaoMaZhuangTai.PAI_DUI_ZHONG_TEXT.equals(hmztMc)) {
