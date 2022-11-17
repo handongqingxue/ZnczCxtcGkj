@@ -68,8 +68,8 @@ public class ClientSocket implements Runnable {
 		System.out.println("action==="+action);
 		int placeFlag = LoadProperties.getPlaceFlag();
 		System.out.println("placeFlag==="+placeFlag);
-		switch (action) {
-		case Constant.PUSH_CPH:
+		switch (action) {//判断消息类型
+		case Constant.PUSH_CPH://接收到推送车牌号类型的消息
 			Car car1=new Car();
 			String cph = mesJO.getString("cph");
 			car1.setsLicense(" "+cph);
@@ -116,7 +116,7 @@ public class ClientSocket implements Runnable {
 				break;
 			}
 			break;
-		case Constant.PUSH_SFZH:
+		case Constant.PUSH_SFZH://接收到推送身份证号类型的消息
 			String sfzh = mesJO.getString("sfzh");
 			IdReaderUtil.paiDuiBySfzh(sfzh);
 			break;

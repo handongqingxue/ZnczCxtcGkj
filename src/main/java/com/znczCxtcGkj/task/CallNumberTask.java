@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.znczCxtcGkj.entity.*;
 import com.znczCxtcGkj.led.LedUtil;
 import com.znczCxtcGkj.util.*;
@@ -41,7 +42,8 @@ public class CallNumberTask extends Thread {
 					System.out.println("目前没有需要叫号中和排队中的车辆");
 					continue;
 				}
-				List<HaoMa> hmList=(List<HaoMa>)resultJO.get("hmList");
+				//https://blog.csdn.net/xy631739211/article/details/111601699
+				List<HaoMa> hmList=JSON.parseArray(resultJO.get("hmList").toString(), HaoMa.class);
 				System.out.println("待叫号和排队中的数量为:" + hmList.size());
 				
 				// 存放正在叫号中的车牌号
@@ -52,11 +54,18 @@ public class CallNumberTask extends Thread {
 					String hmztMc = hm.getHmztMc();
 					if(HaoMaZhuangTai.JIAO_HAO_ZHONG_TEXT.equals(hmztMc)) {
 						String ksjhsj = hm.getKsjhsj();
-						long ksjhsjTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ksjhsj).getTime();
+						Long ksjhsjTime = null;
+						if (StringUtils.isBlank(ksjhsj)) {
+							// 若没有开始叫号时间
+							ksjhsjTime = new Date().getTime();
+						} else { 
+							ksjhsjTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ksjhsj).getTime();
+						}
 						
 						long currTime = new Date().getTime();
 						// 900000 为15分钟的毫秒，
-						if ((ksjhsjTime + 900000) < currTime) {
+						int passNumberTime = LoadProperties.getPassNumberTime();
+						if ((ksjhsjTime + passNumberTime) < currTime) {
 							//开始叫号时间如果和当前时间大于15分钟，那么此排号信息需要做过号处理
 							hm.setHmztMc(HaoMaZhuangTai.YI_GUO_HAO_TEXT);
 				        	APIUtil.editHaoMa(hm);
@@ -103,7 +112,10 @@ public class CallNumberTask extends Thread {
 				for (String cphDaiRuChang : cphListDaiRuChang) {
 					try {
 						System.out.println("发送音频83：请车牌号为");
+						/*
+						 * 先注释掉，等到现场后再打开
 						YinZhuUtil.sendMsg(ModBusUtil.get83(), 1500);
+						*/
 						char[] charCph = cphDaiRuChang.toCharArray();
 						for (char c : charCph) {
 							String valueOf = String.valueOf(c);
@@ -123,6 +135,9 @@ public class CallNumberTask extends Thread {
 						e.printStackTrace();
 					} 
 				}
+				
+				int callNumberTimeSpace = LoadProperties.getCallNumberTimeSpace();
+				Thread.sleep(callNumberTimeSpace);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

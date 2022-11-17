@@ -645,6 +645,44 @@ public class LoadProperties {
 	}
 	
 	/**
+	 * 叫号时间间隔(毫秒)
+	 * @return
+	 */
+	public static Integer getCallNumberTimeSpace() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("callNumberTimeSpace").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置callNumberTimeSpace");
+			return null;
+		}
+		
+		int parseInt = Integer.parseInt(trim);
+		
+		return parseInt;
+	}
+	
+	/**
+	 * 过号时间(毫秒)
+	 * @return
+	 */
+	public static Integer getPassNumberTime() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("passNumberTime").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置passNumberTime");
+			return null;
+		}
+		
+		int parseInt = Integer.parseInt(trim);
+		
+		return parseInt;
+	}
+	
+	/**
 	 * 获得服务器ip
 	 * @return
 	 */
