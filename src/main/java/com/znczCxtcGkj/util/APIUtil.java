@@ -251,6 +251,21 @@ public class APIUtil {
 		}
 	}
 
+	public static JSONObject getLastHaoMaByDdId(long ddId) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("ddId", ddId);  
+	        resultJO = doHttp("getLastHaoMaByDdId",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+
 	/*
 	public static JSONObject getDingDan(String cph, String ddztMc) {
 		JSONObject resultJO = null;
@@ -322,7 +337,9 @@ public class APIUtil {
 			Map parames = new HashMap<String, String>();
 	        parames.put("id", hm.getId());
 	        parames.put("hmztMc", hm.getHmztMc());
-	        parames.put("ksjhsj", hm.getKsjhsj());
+	        String ksjhsj = hm.getKsjhsj();
+	        if(!StringUtils.isBlank(ksjhsj))
+	        	parames.put("ksjhsj", ksjhsj);
 	        parames.put("jhcs", hm.getJhcs());
 	        parames.put("ddId", hm.getDdId());
 	        resultJO = doHttp("editHaoMa",parames);

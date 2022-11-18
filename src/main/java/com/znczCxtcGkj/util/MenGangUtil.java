@@ -23,7 +23,10 @@ public class MenGangUtil {
         	dd.setDdztMc(DingDanZhuangTai.DAI_JIAN_YAN_TEXT);
         	JSONObject eddResultJO=APIUtil.editDingDan(dd);
         	if("ok".equals(eddResultJO.getString("message"))) {
-    			long drcHmId = drcDdJO.getLong("hmId");
+        		JSONObject lhmResultJO = APIUtil.getLastHaoMaByDdId(drcDdId);
+        		JSONObject lhmJO = lhmResultJO.getJSONObject("haoMa");
+    			long drcHmId = lhmJO.getLong("id");
+    			System.out.println("drcHmId==="+drcHmId);
         		HaoMa hm=new HaoMa();
         		hm.setId(drcHmId);
         		hm.setHmztMc(HaoMaZhuangTai.SHOU_LI_ZHONG_TEXT);
