@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
 import com.znczCxtcGkj.entity.*;
+import com.znczCxtcGkj.print.*;
 
 public class APIUtil {
 	
@@ -440,6 +441,21 @@ public class APIUtil {
 		}
 	}
 	
+	public static JSONObject selectBangDanJiLuByDdId(Long ddId) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("ddId", ddId);
+	        resultJO = doHttp("selectBangDanJiLuByDdId",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
 	public static JSONObject newGuoBangJiLu(GuoBangJiLu gbjl) {
 		JSONObject resultJO = null;
 		try {
@@ -452,6 +468,27 @@ public class APIUtil {
 	        parames.put("gblx", gbjl.getGblx());
 	        parames.put("ddId", gbjl.getDdId());
 	        resultJO = doHttp("newGuoBangJiLu",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	
+	public static JSONObject editBangDanJiLu(Integer id, Float mz, Float pz, Float jz) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("id", id);
+	        if(mz!=null)
+	        	parames.put("mz", mz);
+	        if(pz!=null)
+	        	parames.put("pz", pz);
+	        if(jz!=null)
+	        	parames.put("jz", jz);
+	        resultJO = doHttp("editBangDanJiLu",parames);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -510,6 +547,69 @@ public class APIUtil {
 		}
 	}
 	
+	/**
+	 * 打印过磅记录小票
+	 * @param gblx
+	 */
+	public static void printGbjl(int gblx) {
+		System.out.println("打印过磅记录小票");
+		JSONObject resultJO = null;
+		Integer bfh = LoadProperties.getBangFangHao();
+		switch (gblx) {
+		case GuoBangJiLu.RU_CHANG_GUO_BANG:
+			System.out.println("查询订单状态为一检中，一检状态为待下磅的订单");
+			resultJO=getDingDanByZt(bfh,0,DingDanZhuangTai.YI_JIAN_ZHONG_TEXT,DingDan.DAI_XIA_BANG,DingDan.DAI_SHANG_BANG);
+			break;
+		case GuoBangJiLu.CHU_CHANG_GUO_BANG:
+			System.out.println("查询订单状态为二检中，二检状态为待下磅的订单");
+			resultJO=getDingDanByZt(0,bfh,DingDanZhuangTai.ER_JIAN_ZHONG_TEXT,DingDan.YI_WAN_CHENG,DingDan.DAI_XIA_BANG);
+			break;
+		}
+		
+		String status = resultJO.getString("status");
+		if("ok".equals(status)) {
+			JSONObject dingDanJO=resultJO.getJSONObject("dingDan");
+			long ddId = dingDanJO.getLong("id");
+			JSONObject gbjlResultJO=selectGuoBangJiLuByDdId(ddId,gblx);
+			
+			GuoBangJiLu gbjl=(GuoBangJiLu)net.sf.json.JSONObject.toBean(net.sf.json.JSONObject.fromObject(gbjlResultJO.get("gbjl").toString()), GuoBangJiLu.class);
+			
+	        BangDanPrint bdp=new BangDanPrint(gbjl,BangDanPrint.GUO_BANG_JI_LU);
+	        XPPrinter xpp=new XPPrinter(bdp);
+	        xpp.printer();
+		}
+		else {
+        	System.out.println("message==="+resultJO.getString("message"));
+        	System.out.println("音柱播报：找不到相关过磅记录");
+		}
+	}
+	
+	/**
+	 * 打印磅单记录小票
+	 */
+	public static void printBdjl() {
+		System.out.println("打印磅单记录小票");
+		Integer bfh = LoadProperties.getBangFangHao();
+		System.out.println("查询订单状态为二检中，二检状态为待下磅的订单");
+		JSONObject resultJO=getDingDanByZt(0,bfh,DingDanZhuangTai.ER_JIAN_ZHONG_TEXT,DingDan.YI_WAN_CHENG,DingDan.DAI_XIA_BANG);
+		String status = resultJO.getString("status");
+		if("ok".equals(status)) {
+			JSONObject dingDanJO=resultJO.getJSONObject("dingDan");
+			long ddId = dingDanJO.getLong("id");
+			JSONObject bdjlResultJO=selectBangDanJiLuByDdId(ddId);
+
+			BangDanJiLu bdjl=(BangDanJiLu)net.sf.json.JSONObject.toBean(net.sf.json.JSONObject.fromObject(bdjlResultJO.get("bdjl").toString()), BangDanJiLu.class);
+			
+	        BangDanPrint bdp=new BangDanPrint(bdjl,BangDanPrint.BANG_DAN_JI_LU);
+	        XPPrinter xpp=new XPPrinter(bdp);
+	        xpp.printer();
+		}
+		else {
+        	System.out.println("message==="+resultJO.getString("message"));
+        	System.out.println("音柱播报：找不到相关磅单记录");
+		}
+	}
+	
 	public static void playWeight(float djczl) {
 		System.out.println("当前重量");
 		//YinZhuTask.sendMsg(YzZlUtil.get98().replaceAll(" ", ""), 1500,jyFlag);
@@ -526,6 +626,22 @@ public class APIUtil {
 				chi=36;
 			System.out.println("chi==="+chi);
     		//YinZhuTask.sendMsg(YzZlUtil.getByDuanHao(chi).replaceAll(" ", ""), 800,jyFlag);
+		}
+	}
+	
+	public static JSONObject selectGuoBangJiLuByDdId(Long ddId, Integer gblx) {
+		JSONObject resultJO = null;
+		try {
+			Map parames = new HashMap<String, String>();
+	        parames.put("ddId", ddId);
+	        parames.put("gblx", gblx);
+	        resultJO = doHttp("selectGuoBangJiLuByDdId",parames);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
 		}
 	}
 	
