@@ -753,6 +753,25 @@ public class LoadProperties {
 	}
 
 	/**
+	 * 获得磅房号
+	 * @return
+	 */
+	public static Integer getBangFangHao() {
+		if (prop == null) {
+			prop = Method2();
+		}
+		String trim = prop.getProperty("bangFangHao").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置bangFangHao");
+			return null;
+		}
+		
+		int parseInt = Integer.parseInt(trim);
+		
+		return parseInt;
+	}
+
+	/**
 	 * 获得地磅Com口号
 	 * 
 	 * @return
