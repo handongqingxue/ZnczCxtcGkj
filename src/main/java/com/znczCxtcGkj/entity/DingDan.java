@@ -31,6 +31,9 @@ public class DingDan {
 	 */
 	public static final Integer YI_WAN_CHENG=7;
 	
+	public static final Integer SONG_YUN=1;
+	public static final Integer QU_YUN=2;
+	
 	private Long id;//¶©µ¥id£¨Ö÷¼ü£©
 	public Long getId() {
 		return id;

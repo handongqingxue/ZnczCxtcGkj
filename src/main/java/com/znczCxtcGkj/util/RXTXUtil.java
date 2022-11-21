@@ -229,8 +229,7 @@ public class RXTXUtil {
     public static void closeSerialPort(SerialPort serialPort) {
         if(serialPort != null) {
             serialPort.close();
-            //System.out.println("关闭了串口："+serialPort.getName());
-            serialPort = null;
+            System.out.println("关闭了串口："+serialPort.getName());
         }
     }
     
