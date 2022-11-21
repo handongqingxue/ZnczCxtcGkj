@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.znczCxtcGkj.util.*;
 
+import gnu.io.SerialPort;
+
 public class YinZhuUtil {
 	
 	static Logger logger = LoggerFactory.getLogger(YinZhuUtil.class);
@@ -17,12 +19,13 @@ public class YinZhuUtil {
 	 */
 	public static String sendMsg(String modBus, long sleepTime) {
 		String executeOrder = null;
+		SerialPort serialPort = null;
 		try {
 			logger.info("·¢ËÍÒôÆµ");
 			String yinZhuCom = LoadProperties.getYinZhuCom();
 			// ¿ªÆô´®¿Ú
-			RXTXUtil.openSerialPort(yinZhuCom, 100);
-			executeOrder = RXTXUtil.executeOrder(modBus, yinZhuCom, 1);
+			serialPort = RXTXUtil.openSerialPort(yinZhuCom, 100);
+			RXTXUtil.sendData(serialPort,modBus);
 		} catch (Exception e) {
 			logger.info("ÒôÆµ·¢ËÍ´íÎó");
 			e.printStackTrace();
@@ -32,7 +35,7 @@ public class YinZhuUtil {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			RXTXUtil.closeSerialPort();
+			RXTXUtil.closeSerialPort(serialPort);
 		}
 		return executeOrder;
 	}

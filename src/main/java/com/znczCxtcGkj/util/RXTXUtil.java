@@ -16,62 +16,43 @@ import java.util.TooManyListenersException;
  * 使用rxtx连接串口工具类
  */
 public class RXTXUtil {
-    
-    private static final String DEMONAME = "串口测试";
-
-    /**
-     * 检测系统中可用的端口
-     */
-    private CommPortIdentifier portId;
-    /**
-     * 获得系统可用的端口名称列表
-     */
-    private static Enumeration<CommPortIdentifier> portList;
-    /**
-     * 输入流
-     */
-    private static InputStream inputStream;
-    /**
-     * RS-232的串行口
-     */
-    private static SerialPort serialPort;
     /**
      * 返回结果
      */
     private static String res=null;
     
-    /**
-     * 	串口命令执行
-     * @param order 命令
-     * @param portName 端口名
-     * @param baudRate 波特率
-     * @return
-     */
-    public synchronized  static String executeOrder(String order,String portName,int baudRate)  {
-        String str="";
-        if (serialPort==null) {
-            openSerialPort(portName, baudRate);
-        }
-        //发送消息
-        sendData(order);
-        return res;
-    }
-
     
     /**
-     * 	获得系统可用的端口名称列�?
-     * @return 可用端口名称列表
+     * 	获得系统可用的串口名称列表
+     * @return 可用串口名称列表
      */
     @SuppressWarnings("unchecked")
-    public static void getSystemPort(){
+    public static List<String> getSystemUseAblePort(){
         List<String> systemPorts = new ArrayList<>();
-        //获得系统可用的端�?
-        portList = CommPortIdentifier.getPortIdentifiers();
+        //获得系统可用的串口
+        Enumeration<CommPortIdentifier> portList = CommPortIdentifier.getPortIdentifiers();
         while(portList.hasMoreElements()) {
-            String portName = portList.nextElement().getName();//获得端口的名�?
+            String portName = portList.nextElement().getName();//获得端口的名称
             systemPorts.add(portName);
         }
-
+        return systemPorts;
+    }
+    
+    /**
+     * 验证串口是否可用
+     * @param serialPortName
+     * @return
+     */
+    public static boolean checkPortUseAble(String serialPortName) {
+    	boolean useAble=false;
+    	List<String> systemPortNameList = getSystemUseAblePort();
+    	for (String systemPortName : systemPortNameList) {
+    		if(systemPortName.equals(serialPortName)) {
+            	useAble=true;
+            	break;
+            }
+		}
+    	return useAble;
     }
 
     /**
@@ -80,7 +61,8 @@ public class RXTXUtil {
      * @param baudRate 波特�?
      * @return 串口对象
      */
-    public static void openSerialPort(String serialPortName,int baudRate) {
+    public static SerialPort openSerialPort(String serialPortName,int baudRate) {
+    	SerialPort serialPort=null;
         try {
             //通过端口名称得到端口
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(serialPortName);
@@ -104,25 +86,17 @@ public class RXTXUtil {
             e.printStackTrace();
         }
 
+        return serialPort;
     }
-    
-    public static void main(String[] args) {
-    	try {
-    		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("COM4");
-    		System.out.println("portIdentifier==="+portIdentifier);
-		} catch (NoSuchPortException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
     /**
-     * 	向串口发送数�?
-     * @param order 发�?�的命令 16进制表示
+     * 	向串口发送数据
+     * @param serialPort
+     * @param order
      */
-    public static void sendData( String order) {
+    public static void sendData(SerialPort serialPort,String order) {
     	System.out.println("order==="+order);
-        //16进制表示的字符串转换为字节数�?
+        //16进制表示的字符串转换为字节数据
         byte[] data =HexadecimalUtil.hexStringToByteArray(order);
         OutputStream os = null;
         try {
@@ -132,7 +106,7 @@ public class RXTXUtil {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            //关闭流操�?
+            //关闭流操作
             try {
                 if (os != null) {
                     os.close();
@@ -143,12 +117,40 @@ public class RXTXUtil {
             }
         }
     }
+    
+    /**
+     * 上位机往单板机通过串口发送数据
+     * 串口对象 seriesPort
+     * 数据帧:dataPackage
+     * 发送的标志:数据未发送成功抛出一个异常
+     */
+    public static void sendData(SerialPort serialPort,byte[] dataPackage) {
+        OutputStream out=null;
+        try {
+            out=serialPort.getOutputStream();
+            out.write(dataPackage);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //关闭输出流
+            if(out!=null) {
+                try {
+                    out.close();
+                    out=null;
+                    //System.out.println("数据已发送完毕!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     /**
-     * 	从串口读取数�?
-     * @return 读取的数�?
+     * 	从串口读取数据
+     * @return 读取的数据
      */
-    public static String  readData() {
+    public static String readData(SerialPort serialPort) {
         //保存串口返回信息
         StringBuffer res=new StringBuffer(40);
         InputStream is = null;
@@ -185,30 +187,60 @@ public class RXTXUtil {
     }
 
     /**
+     * 上位机接收数据
+     * 串口对象seriesPort
+     * 接收数据buffer
+     * 返回一个byte数组
+     */
+    public static byte[] readByteData(SerialPort serialPort,long timeSpace) {
+        byte[] receiveDataPackage=null;
+        InputStream in=null;
+        try {
+            //Thread.sleep(500);
+        	if(timeSpace>0)//从地磅里读取数据需要休眠
+        		Thread.sleep(timeSpace);
+            in=serialPort.getInputStream();
+            // 获取data buffer数据长度
+            int bufferLength=in.available();
+            while(bufferLength!=0) {
+                receiveDataPackage=new byte[bufferLength];
+                in.read(receiveDataPackage);
+                bufferLength=in.available();
+
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                	in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return receiveDataPackage;
+    }
+
+    /**
      * 关闭串口
      *
      */
-    public static void closeSerialPort() {
+    public static void closeSerialPort(SerialPort serialPort) {
         if(serialPort != null) {
             serialPort.close();
             //System.out.println("关闭了串口："+serialPort.getName());
             serialPort = null;
         }
     }
-
-    /**
-     * 	给串口设置监�?
-     * @param listener
-     */
-    public static void setListenerToSerialPort( SerialPortEventListener listener) {
-        try {
-            //给串口添加事件监�?
-            serialPort.addEventListener(listener);
-        } catch (TooManyListenersException e) {
-            e.printStackTrace();
-        }
-        serialPort.notifyOnDataAvailable(true);//串口有数据监�?
-        serialPort.notifyOnBreakInterrupt(true);//中断事件监听
-
-    }
+    
+    public static void main(String[] args) {
+    	try {
+    		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("COM4");
+    		System.out.println("portIdentifier==="+portIdentifier);
+		} catch (NoSuchPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
