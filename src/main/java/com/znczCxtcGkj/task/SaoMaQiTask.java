@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.znczCxtcGkj.cpsbsxt.Car;
+import com.znczCxtcGkj.entity.DingDanZhuangTai;
 import com.znczCxtcGkj.util.*;
 
 import gnu.io.SerialPort;
@@ -45,6 +47,7 @@ public class SaoMaQiTask extends Thread {
 			        System.out.println("订单号==="+ddh);
 			        System.out.println("司机身份证==="+sjsfz);
 			        */
+		        	updateGBEWMSBDDXX(dataReceive);
 			    } else {
 			    	msg="接收到的数据为空！\n";
 			        System.out.println(msg);
@@ -54,5 +57,60 @@ public class SaoMaQiTask extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 更新过磅识别二维码订单信息
+	 * @param car
+	 */
+	private void updateGBEWMSBDDXX(String cph) {
+		JSONObject resultJO=null;
+		resultJO=APIUtil.getDingDanByCphZts(cph,DingDanZhuangTai.YI_JIAN_DAI_SAO_MA_TEXT);
+		if(resultJO!=null) {
+			int bfh = LoadProperties.getPlaceFlag();//扫码器是在磅房处，地点标识充当磅房号
+            if("ok".equals(resultJO.getString("status"))) {
+        		//一检车辆识别
+            	switch (bfh) {
+				case Constant.YI_HAO_BANG_FANG:
+					BangFang1Util.updateYJEWMSBDDXX(cph);
+					break;
+				case Constant.ER_HAO_BANG_FANG:
+					//BangFang2Util.updateYJCPSBDDXX(car);
+					break;
+				case Constant.SAN_HAO_BANG_FANG:
+					//BangFang3Util.updateYJCPSBDDXX(car);
+					break;
+				}
+            }
+            else {
+        		resultJO=APIUtil.getDingDanByCphZts(cph,DingDanZhuangTai.ER_JIAN_DAI_SAO_MA_TEXT);
+        		if(resultJO!=null) {
+                    if("ok".equals(resultJO.getString("status"))) {
+                		//二检车辆识别
+                    	switch (bfh) {
+						case Constant.YI_HAO_BANG_FANG:
+	                    	BangFang1Util.updateEJEWMSBDDXX(cph);
+							break;
+						case Constant.ER_HAO_BANG_FANG:
+							//BangFang2Util.updateEJCPSBDDXX(car);
+							break;
+						case Constant.SAN_HAO_BANG_FANG:
+							//BangFang3Util.updateEJCPSBDDXX(car);
+							break;
+						}
+                    }
+                    else {
+                    	System.out.println("message==="+resultJO.getString("message"));
+                    	System.out.println("音柱播报：没有找到匹配订单");
+                		//YinZhuTask.sendMsg(YzZlUtil.get86().replaceAll(" ", ""), 1500,YinZhuTask.YI_JIAN);
+                    }
+        		}
+            }
+		}
+	}
+	
+	public static void main(String[] args) {
+		SaoMaQiTask smqt=new SaoMaQiTask();
+		smqt.updateGBEWMSBDDXX("鲁B9008");
 	}
 }

@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class LoadProperties {
 	static Logger logger = LoggerFactory.getLogger(LoadProperties.class);
 	private static Properties prop = null;
-	private static final int CURRENT_PLACE_FLAG=Constant.MEN_GANG;
+	private static final int CURRENT_PLACE_FLAG=Constant.YI_HAO_BANG_FANG;
 	private static final boolean IS_TEST=true;//是否是测试
 	//private static final boolean IS_TEST=false;//是否是测试
 
@@ -744,25 +744,6 @@ public class LoadProperties {
 		String trim = prop.getProperty("placeFlag").trim();
 		if (StringUtils.isBlank(trim)) {
 			logger.debug("请在配置文件中配置placeFlag");
-			return null;
-		}
-		
-		int parseInt = Integer.parseInt(trim);
-		
-		return parseInt;
-	}
-
-	/**
-	 * 获得磅房号
-	 * @return
-	 */
-	public static Integer getBangFangHao() {
-		if (prop == null) {
-			prop = Method2();
-		}
-		String trim = prop.getProperty("bangFangHao").trim();
-		if (StringUtils.isBlank(trim)) {
-			logger.debug("请在配置文件中配置bangFangHao");
 			return null;
 		}
 		

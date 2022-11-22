@@ -554,7 +554,7 @@ public class APIUtil {
 	public static void printGbjl(int gblx) {
 		System.out.println("打印过磅记录小票");
 		JSONObject resultJO = null;
-		Integer bfh = LoadProperties.getBangFangHao();
+		Integer bfh = LoadProperties.getPlaceFlag();
 		switch (gblx) {
 		case GuoBangJiLu.RU_CHANG_GUO_BANG:
 			System.out.println("查询订单状态为一检中，一检状态为待下磅的订单");
@@ -589,7 +589,7 @@ public class APIUtil {
 	 */
 	public static void printBdjl() {
 		System.out.println("打印磅单记录小票");
-		Integer bfh = LoadProperties.getBangFangHao();
+		Integer bfh = LoadProperties.getPlaceFlag();
 		System.out.println("查询订单状态为二检中，二检状态为待下磅的订单");
 		JSONObject resultJO=getDingDanByZt(0,bfh,DingDanZhuangTai.ER_JIAN_ZHONG_TEXT,DingDan.YI_WAN_CHENG,DingDan.DAI_XIA_BANG);
 		String status = resultJO.getString("status");
