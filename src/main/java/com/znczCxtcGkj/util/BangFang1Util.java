@@ -344,7 +344,9 @@ public class BangFang1Util {
 					*/
 					
 		        	System.out.println("抬起一检下磅道闸");
+		        	/*
 		        	JdqBf1Util.openXiaBangDz();
+		        	*/
 					
 					checkYJXBHWGSState();
 				}
@@ -899,10 +901,10 @@ public class BangFang1Util {
 	}
 	
 	public static void main(String[] args) {
-		/*
 		Car car=new Car();
 		car.setsLicense(" 鲁B9008");
 		updateYJCPSBDDXX(car);
+		/*
 		*/
 		
 		//checkYJSBHWGSState();
@@ -911,6 +913,6 @@ public class BangFang1Util {
 		
 		//yiJianChengZhongZhong();
 		
-		checkYJXBHWGSState();
+		//checkYJXBHWGSState();
 	}
 }
