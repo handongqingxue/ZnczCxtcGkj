@@ -959,10 +959,10 @@ public class BangFang1Util {
 		
 		//checkYJXBHWGSState();
 		
-		//updateEJCPSBDDXX(car);
+		updateEJCPSBDDXX(car);
 		
 		//erJianChengZhongZhong();
 		
-		checkEJXBHWGSState();
+		//checkEJXBHWGSState();
 	}
 }

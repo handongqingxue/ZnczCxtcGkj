@@ -456,6 +456,7 @@ public class APIUtil {
 		}
 	}
 	
+	/*
 	public static JSONObject newGuoBangJiLu(GuoBangJiLu gbjl) {
 		JSONObject resultJO = null;
 		try {
@@ -469,6 +470,33 @@ public class APIUtil {
 	        parames.put("ddId", gbjl.getDdId());
 	        resultJO = doHttp("newGuoBangJiLu",parames);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			return resultJO;
+		}
+	}
+	*/
+	
+	public static JSONObject newGuoBangJiLu(GuoBangJiLu gbjl) {
+		JSONObject resultJO = null;
+		try {
+			Map textMap = new HashMap<String, String>();
+			textMap.put("gbzl", gbjl.getGbzl());
+			textMap.put("gbzt", gbjl.getGbzt());
+			textMap.put("gblx", gbjl.getGblx());
+			textMap.put("ddId", gbjl.getDdId());
+	
+			Map fileMap = new HashMap<String, Object>();
+			//String zpFilePath = "D:/wear/202211/IMG_20221105_120734.jpg";
+			String zpFilePath = "F:/我的文件/本少爷的穿着打扮/202211/IMG_20221113_192733.jpg";
+			fileMap.put("zp1_file", zpFilePath);
+			fileMap.put("zp2_file", zpFilePath);
+			fileMap.put("zp3_file", zpFilePath);
+			
+	        resultJO = formUpload("newGuoBangJiLu",textMap,fileMap);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
