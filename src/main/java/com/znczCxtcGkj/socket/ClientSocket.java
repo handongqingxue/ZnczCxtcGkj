@@ -76,7 +76,15 @@ public class ClientSocket implements Runnable {
 			//地点可能是门岗或磅房，就得在最外层判断。这里与蓝帆医疗那边的判断逻辑不太一样，蓝帆那边只有磅房部署了程序，把一检或二检判断写在最外层。这里就得先判断地点，再判断哪个磅房
 			switch (placeFlag) {
 			case Constant.MEN_GANG:
-				MenGangUtil.updateJCCPSBDDXX(car1);
+				int jccFlag = mesJO.getInt("jccFlag");
+				switch (jccFlag) {
+				case Constant.JIN_CHANG:
+					MenGangUtil.updateJCCPSBDDXX(car1);
+					break;
+				case Constant.CHU_CHANG:
+					MenGangUtil.updateCCCPSBDDXX(car1);
+					break;
+				}
 				break;
 			case Constant.YI_HAO_BANG_FANG:
 				int yhbfJyFlag = mesJO.getInt("jyFlag");

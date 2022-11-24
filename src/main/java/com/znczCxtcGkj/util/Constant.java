@@ -12,6 +12,9 @@ public class Constant {
 	
 	public static final int YI_JIAN=1;
 	public static final int ER_JIAN=2;
+	
+	public static final int JIN_CHANG=1;
+	public static final int CHU_CHANG=2;
 
 	public static final String PUSH_SFZH="pushSfzh";
 	public static final String PUSH_CPH="pushCph";

@@ -27,6 +27,7 @@ public class MenGangUtil {
         		JSONObject lhmJO = lhmResultJO.getJSONObject("haoMa");
     			long drcHmId = lhmJO.getLong("id");
     			System.out.println("drcHmId==="+drcHmId);
+    			
         		HaoMa hm=new HaoMa();
         		hm.setId(drcHmId);
         		hm.setHmztMc(HaoMaZhuangTai.SHOU_LI_ZHONG_TEXT);
@@ -79,10 +80,15 @@ public class MenGangUtil {
         	dd.setDdztMc(DingDanZhuangTai.YI_WAN_CHENG_TEXT);
         	JSONObject eddResultJO=APIUtil.editDingDan(dd);
         	if("ok".equals(eddResultJO.getString("message"))) {
-    			long klcHmId = klcDdJO.getLong("hmId");
+        		JSONObject lhmResultJO = APIUtil.getLastHaoMaByDdId(klcDdId);
+        		JSONObject lhmJO = lhmResultJO.getJSONObject("haoMa");
+    			long klcHmId = lhmJO.getLong("id");
+    			System.out.println("klcHmId==="+klcHmId);
+        		
         		HaoMa hm=new HaoMa();
         		hm.setId(klcHmId);
         		hm.setHmztMc(HaoMaZhuangTai.YI_WAN_CHENG_TEXT);
+        		hm.setDdId(klcDdId);
         		JSONObject ehmResultJO=APIUtil.editHaoMa(hm);
             	if("ok".equals(ehmResultJO.getString("message"))) {
 	        		CheLiangTaiZhang cltz=new CheLiangTaiZhang();
@@ -90,9 +96,12 @@ public class MenGangUtil {
 	        		JSONObject resultJO = APIUtil.uploadCheLiangTaiZhang(cltz, CheLiangTaiZhang.CHU_CHANG);
 	        		String message = resultJO.getString("message");
 	        		if("ok".equals(message)) {
+	        			/*
+	        			 * 这段代码先注释掉，到现场再打开
 			    		JdqZlUtil.openMenGangJdq();
 			        	JdqMGUtil.openChuChangDz();
 			    		JdqZlUtil.closeMenGangJdq();
+	        			 */
 	        		}
 	        		else {
 	        			System.out.println("上传数据错误，请重新识别车牌");

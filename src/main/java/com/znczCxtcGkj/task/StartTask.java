@@ -10,8 +10,8 @@ public class StartTask {
 	private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static void main(String[] args) {
-		CallNumberTask ct=new CallNumberTask();
-		ct.start();
+		//CallNumberTask ct=new CallNumberTask();
+		//ct.start();
 		
 		ClientSocket cs = new ClientSocket();
 		cs.connectServer();
