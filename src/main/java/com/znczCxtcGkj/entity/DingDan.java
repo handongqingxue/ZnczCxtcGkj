@@ -119,6 +119,24 @@ public class DingDan {
 	public void setCkcs(Integer ckcs) {
 		this.ckcs = ckcs;
 	}
+	public Float getPz() {
+		return pz;
+	}
+	public void setPz(Float pz) {
+		this.pz = pz;
+	}
+	public Float getMz() {
+		return mz;
+	}
+	public void setMz(Float mz) {
+		this.mz = mz;
+	}
+	public Float getJz() {
+		return jz;
+	}
+	public void setJz(Float jz) {
+		this.jz = jz;
+	}
 	public Float getDfgbpz() {
 		return dfgbpz;
 	}
@@ -288,6 +306,18 @@ public class DingDan {
 	public void setBjsj(String bjsj) {
 		this.bjsj = bjsj;
 	}
+	public String getJcsj() {
+		return jcsj;
+	}
+	public void setJcsj(String jcsj) {
+		this.jcsj = jcsj;
+	}
+	public String getCcsj() {
+		return ccsj;
+	}
+	public void setCcsj(String ccsj) {
+		this.ccsj = ccsj;
+	}
 	public Integer getYjbfh() {
 		return yjbfh;
 	}
@@ -324,6 +354,9 @@ public class DingDan {
 	private Integer bs;//包数
 	private Integer ks;//块数
 	private Integer ckcs=0;//出卡次数
+	private Float pz;//皮重
+	private Float mz;//毛重
+	private Float jz;//净重
 	private Float dfgbpz;//对方过磅皮重
 	private Float dfgbmz;//对方过磅毛重
 	private Float dfgbjz;//对方过磅净重
@@ -346,6 +379,8 @@ public class DingDan {
 	private String cysjXm;//承运司机姓名
 	private Integer cysjSfzh;//承运司机身份证号
 	private String bjsj;//编辑时间
+	private String jcsj;
+	private String ccsj;
 	private Integer yjbfh=0;//一检磅房号
 	private Integer ejbfh=0;//二检磅房号
 	private Long hmId;//号码id

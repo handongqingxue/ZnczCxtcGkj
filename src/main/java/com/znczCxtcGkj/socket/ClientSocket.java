@@ -91,10 +91,10 @@ public class ClientSocket implements Runnable {
 				System.out.println("yhbfJyFlag==="+yhbfJyFlag);
 				switch (yhbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang1Util.updateYJCPSBDDXX(car1);
+					BangFang1Util.updateYJCPSBDDXX(car1);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang1Util.updateEJCPSBDDXX(car1);
+					BangFang1Util.updateEJCPSBDDXX(car1);
 					break;
 				}
 				break;
