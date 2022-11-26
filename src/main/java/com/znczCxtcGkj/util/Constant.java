@@ -18,4 +18,5 @@ public class Constant {
 
 	public static final String PUSH_SFZH="pushSfzh";
 	public static final String PUSH_CPH="pushCph";
+	public static final String PUSH_EWM="pushEwm";
 }

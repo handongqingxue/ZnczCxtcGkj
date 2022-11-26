@@ -69,32 +69,18 @@ public class ClientSocket implements Runnable {
 		int placeFlag = LoadProperties.getPlaceFlag();
 		System.out.println("placeFlag==="+placeFlag);
 		switch (action) {//判断消息类型
-		case Constant.PUSH_CPH://接收到推送车牌号类型的消息
-			Car car1=new Car();
-			String cph = mesJO.getString("cph");
-			car1.setsLicense(" "+cph);
-			//地点可能是门岗或磅房，就得在最外层判断。这里与蓝帆医疗那边的判断逻辑不太一样，蓝帆那边只有磅房部署了程序，把一检或二检判断写在最外层。这里就得先判断地点，再判断哪个磅房
+		case Constant.PUSH_EWM://接收到推送二维码类型的消息
+			String cph1 = mesJO.getString("cph");
 			switch (placeFlag) {
-			case Constant.MEN_GANG:
-				int jccFlag = mesJO.getInt("jccFlag");
-				switch (jccFlag) {
-				case Constant.JIN_CHANG:
-					MenGangUtil.updateJCCPSBDDXX(car1);
-					break;
-				case Constant.CHU_CHANG:
-					MenGangUtil.updateCCCPSBDDXX(car1);
-					break;
-				}
-				break;
 			case Constant.YI_HAO_BANG_FANG:
 				int yhbfJyFlag = mesJO.getInt("jyFlag");
 				System.out.println("yhbfJyFlag==="+yhbfJyFlag);
 				switch (yhbfJyFlag) {
 				case Constant.YI_JIAN:
-					BangFang1Util.updateYJCPSBDDXX(car1);
+					BangFang1Util.updateYJEWMSBDDXX(cph1);
 					break;
 				case Constant.ER_JIAN:
-					BangFang1Util.updateEJCPSBDDXX(car1);
+					BangFang1Util.updateEJEWMSBDDXX(cph1);
 					break;
 				}
 				break;
@@ -103,10 +89,10 @@ public class ClientSocket implements Runnable {
 				System.out.println("ehbfJyFlag==="+ehbfJyFlag);
 				switch (ehbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang2Util.updateYJCPSBDDXX(car1);
+					//BangFang2Util.updateYJCPSBDDXX(ewmCar);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang2Util.updateEJCPSBDDXX(car1);
+					//BangFang2Util.updateEJCPSBDDXX(ewmCar);
 					break;
 				}
 				break;
@@ -115,10 +101,65 @@ public class ClientSocket implements Runnable {
 				System.out.println("shbfJyFlag==="+shbfJyFlag);
 				switch (shbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang3Util.updateYJCPSBDDXX(car1);
+					//BangFang3Util.updateYJCPSBDDXX(ewmCar);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang3Util.updateEJCPSBDDXX(car1);
+					//BangFang3Util.updateEJCPSBDDXX(ewmCar);
+					break;
+				}
+				break;
+			}
+			break;
+		case Constant.PUSH_CPH://接收到推送车牌号类型的消息
+			Car cphCar=new Car();
+			String cph2 = mesJO.getString("cph");
+			cphCar.setsLicense(" "+cph2);
+			//地点可能是门岗或磅房，就得在最外层判断。这里与蓝帆医疗那边的判断逻辑不太一样，蓝帆那边只有磅房部署了程序，把一检或二检判断写在最外层。这里就得先判断地点，再判断哪个磅房
+			switch (placeFlag) {
+			case Constant.MEN_GANG:
+				int jccFlag = mesJO.getInt("jccFlag");
+				switch (jccFlag) {
+				case Constant.JIN_CHANG:
+					MenGangUtil.updateJCCPSBDDXX(cphCar);
+					break;
+				case Constant.CHU_CHANG:
+					MenGangUtil.updateCCCPSBDDXX(cphCar);
+					break;
+				}
+				break;
+			case Constant.YI_HAO_BANG_FANG:
+				int yhbfJyFlag = mesJO.getInt("jyFlag");
+				System.out.println("yhbfJyFlag==="+yhbfJyFlag);
+				switch (yhbfJyFlag) {
+				case Constant.YI_JIAN:
+					BangFang1Util.updateYJCPSBDDXX(cphCar);
+					break;
+				case Constant.ER_JIAN:
+					BangFang1Util.updateEJCPSBDDXX(cphCar);
+					break;
+				}
+				break;
+			case Constant.ER_HAO_BANG_FANG:
+				int ehbfJyFlag = mesJO.getInt("jyFlag");
+				System.out.println("ehbfJyFlag==="+ehbfJyFlag);
+				switch (ehbfJyFlag) {
+				case Constant.YI_JIAN:
+					//BangFang2Util.updateYJCPSBDDXX(cphCar);
+					break;
+				case Constant.ER_JIAN:
+					//BangFang2Util.updateEJCPSBDDXX(cphCar);
+					break;
+				}
+				break;
+			case Constant.SAN_HAO_BANG_FANG:
+				int shbfJyFlag = mesJO.getInt("jyFlag");
+				System.out.println("shbfJyFlag==="+shbfJyFlag);
+				switch (shbfJyFlag) {
+				case Constant.YI_JIAN:
+					//BangFang3Util.updateYJCPSBDDXX(cphCar);
+					break;
+				case Constant.ER_JIAN:
+					//BangFang3Util.updateEJCPSBDDXX(cphCar);
 					break;
 				}
 				break;
