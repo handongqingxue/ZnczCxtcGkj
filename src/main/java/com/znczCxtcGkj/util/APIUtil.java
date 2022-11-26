@@ -192,7 +192,8 @@ public class APIUtil {
 	
 			// 读取返回数据
 			StringBuffer strBuf = new StringBuffer();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			//https://blog.csdn.net/HaHa_Sir/article/details/121899477
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				strBuf.append(line).append("\n");

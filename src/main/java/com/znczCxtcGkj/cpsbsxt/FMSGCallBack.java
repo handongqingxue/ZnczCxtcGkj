@@ -394,13 +394,13 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack {
         		//一检车辆识别
             	switch (placeFlag) {
 				case Constant.YI_HAO_BANG_FANG:
-					//BangFang1Util.updateYJCPSBDDXX(car);
+					BangFang1Util.updateYJCPSBDDXX(car);
 					break;
 				case Constant.ER_HAO_BANG_FANG:
-					//BangFang2Util.updateYJCPSBDDXX(car);
+					BangFang2Util.updateYJCPSBDDXX(car);
 					break;
 				case Constant.SAN_HAO_BANG_FANG:
-					//BangFang3Util.updateYJCPSBDDXX(car);
+					BangFang3Util.updateYJCPSBDDXX(car);
 					break;
 				}
             }
@@ -411,13 +411,13 @@ public class FMSGCallBack implements HCNetSDK.FMSGCallBack {
                 		//二检车辆识别
                     	switch (placeFlag) {
 						case Constant.YI_HAO_BANG_FANG:
-	                    	//BangFang1Util.updateEJCPSBDDXX(car);
+	                    	BangFang1Util.updateEJCPSBDDXX(car);
 							break;
 						case Constant.ER_HAO_BANG_FANG:
-							//BangFang2Util.updateEJCPSBDDXX(car);
+							BangFang2Util.updateEJCPSBDDXX(car);
 							break;
 						case Constant.SAN_HAO_BANG_FANG:
-							//BangFang3Util.updateEJCPSBDDXX(car);
+							BangFang3Util.updateEJCPSBDDXX(car);
 							break;
 						}
                     }

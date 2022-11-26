@@ -4,14 +4,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.znczCxtcGkj.socket.*;
+import com.znczCxtcGkj.util.*;
 
 public class StartTask {
 
 	private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static void main(String[] args) {
-		//CallNumberTask ct=new CallNumberTask();
-		//ct.start();
+		int currentPlaceFlag = LoadProperties.getCurrentPlaceFlag();
+		System.out.println("当前位置标识==="+currentPlaceFlag);
+		switch (currentPlaceFlag) {
+		case Constant.MEN_GANG:
+			CallNumberTask ct=new CallNumberTask();
+			ct.start();
+			break;
+		case Constant.YI_HAO_BANG_FANG:
+			break;
+		}
 		
 		ClientSocket cs = new ClientSocket();
 		cs.connectServer();

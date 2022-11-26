@@ -18,6 +18,10 @@ public class LoadProperties {
 	static Logger logger = LoggerFactory.getLogger(LoadProperties.class);
 	private static Properties prop = null;
 	private static final int CURRENT_PLACE_FLAG=Constant.MEN_GANG;
+	public static int getCurrentPlaceFlag() {
+		return CURRENT_PLACE_FLAG;
+	}
+
 	private static final boolean IS_TEST=true;//是否是测试
 	//private static final boolean IS_TEST=false;//是否是测试
 

@@ -89,10 +89,10 @@ public class ClientSocket implements Runnable {
 				System.out.println("ehbfJyFlag==="+ehbfJyFlag);
 				switch (ehbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang2Util.updateYJCPSBDDXX(ewmCar);
+					BangFang2Util.updateYJEWMSBDDXX(cph1);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang2Util.updateEJCPSBDDXX(ewmCar);
+					BangFang2Util.updateEJEWMSBDDXX(cph1);
 					break;
 				}
 				break;
@@ -101,10 +101,10 @@ public class ClientSocket implements Runnable {
 				System.out.println("shbfJyFlag==="+shbfJyFlag);
 				switch (shbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang3Util.updateYJCPSBDDXX(ewmCar);
+					BangFang3Util.updateYJEWMSBDDXX(cph1);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang3Util.updateEJCPSBDDXX(ewmCar);
+					BangFang3Util.updateEJEWMSBDDXX(cph1);
 					break;
 				}
 				break;
@@ -144,10 +144,10 @@ public class ClientSocket implements Runnable {
 				System.out.println("ehbfJyFlag==="+ehbfJyFlag);
 				switch (ehbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang2Util.updateYJCPSBDDXX(cphCar);
+					BangFang2Util.updateYJCPSBDDXX(cphCar);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang2Util.updateEJCPSBDDXX(cphCar);
+					BangFang2Util.updateEJCPSBDDXX(cphCar);
 					break;
 				}
 				break;
@@ -156,10 +156,10 @@ public class ClientSocket implements Runnable {
 				System.out.println("shbfJyFlag==="+shbfJyFlag);
 				switch (shbfJyFlag) {
 				case Constant.YI_JIAN:
-					//BangFang3Util.updateYJCPSBDDXX(cphCar);
+					BangFang3Util.updateYJCPSBDDXX(cphCar);
 					break;
 				case Constant.ER_JIAN:
-					//BangFang3Util.updateEJCPSBDDXX(cphCar);
+					BangFang3Util.updateEJCPSBDDXX(cphCar);
 					break;
 				}
 				break;
