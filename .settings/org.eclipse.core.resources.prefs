@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/znczCxtcGkj/cpsbsxt/HCNetSDK.java=UTF-8
 encoding//src/main/java/com/znczCxtcGkj/cpsbsxt/Test.java=UTF-8
+encoding//src/main/java/com/znczCxtcGkj/util/HexadecimalUtil.java=UTF-8
 encoding//src/main/java/com/znczCxtcGkj/util/ModBusUtil.java=UTF-8
 encoding//src/main/java/com/znczCxtcGkj/util/RXTXUtil.java=UTF-8
 encoding//src/main/resources/config/configBf1.properties=UTF-8

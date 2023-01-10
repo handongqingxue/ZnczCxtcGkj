@@ -18,6 +18,7 @@ public class LoadProperties {
 	static Logger logger = LoggerFactory.getLogger(LoadProperties.class);
 	private static Properties prop = null;
 	private static final int CURRENT_PLACE_FLAG=Constant.MEN_GANG;
+	//private static final int CURRENT_PLACE_FLAG=Constant.YI_HAO_BANG_FANG;
 	public static int getCurrentPlaceFlag() {
 		return CURRENT_PLACE_FLAG;
 	}

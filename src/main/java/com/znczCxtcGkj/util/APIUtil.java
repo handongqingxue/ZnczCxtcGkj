@@ -491,7 +491,7 @@ public class APIUtil {
 	
 			Map fileMap = new HashMap<String, Object>();
 			//String zpFilePath = "D:/wear/202211/IMG_20221105_120734.jpg";
-			String zpFilePath = "F:/我的文件/本少爷的穿着打扮/202211/IMG_20221113_192733.jpg";
+			String zpFilePath = "F:/我的文件/boy/202211/Screenshot_20221105_235820_com.baidu.netdisk.jpg";
 			fileMap.put("zp1_file", zpFilePath);
 			fileMap.put("zp2_file", zpFilePath);
 			fileMap.put("zp3_file", zpFilePath);
@@ -536,7 +536,7 @@ public class APIUtil {
 
 			Map fileMap = new HashMap<String, Object>();
 			//String zpFilePath = "D:/wear/202211/IMG_20221105_120734.jpg";
-			String zpFilePath = "F:/我的文件/本少爷的穿着打扮/202211/IMG_20221113_192733.jpg";
+			String zpFilePath = "F:/我的文件/boy/202211/Screenshot_20221105_235820_com.baidu.netdisk.jpg";
 			fileMap.put("zp_file", zpFilePath);
 			
 	        resultJO = formUpload("uploadCheLiangTaiZhang",textMap,fileMap);
@@ -551,10 +551,10 @@ public class APIUtil {
 	
 	public static JSONObject testFile() {
 		//String file1Path = "D:/wear/202211/IMG_20221105_120734.jpg";
-		String file1Path = "F:/我的文件/本少爷的穿着打扮/IMG_20221113_192733.jpg";
+		String file1Path = "F:/我的文件/boy/202211/Screenshot_20221105_235820_com.baidu.netdisk.jpg";
 		File file1 = new File(file1Path);
 		//String file2Path = "D:/wear/202211/IMG_20221104_200132.jpg";
-		String file2Path = "F:/我的文件/本少爷的穿着打扮/IMG_20221113_192733.jpg";
+		String file2Path = "F:/我的文件/boy/202211/Screenshot_20221105_235820_com.baidu.netdisk.jpg";
 		File file2 = new File(file2Path);
 		JSONObject resultJO = null;
 		try {
