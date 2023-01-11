@@ -287,6 +287,36 @@ public class ChuMoPingUtil {
 	}
 	
 	/**
+	 * 发送排队号
+	 * @param pdh
+	 */
+	public static void sendPdh(String pdh) {
+		SerialPort serialPort = null;
+		try {
+			System.out.println("发送排队号");
+			String chuMoPingCom = LoadProperties.getChuMoPingCom();
+			// 开启串口
+			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
+			for (int i = 0; i < pdh.length(); i++) {
+				char pdhChar = pdh.charAt(i);
+				int varNum = getVarNumBySzZm(pdhChar+"");
+				String hexVarNum = HexadecimalUtil.get16Num(varNum);
+				String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
+				String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"0"+i+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+				String jym = CRCUtil.getCRC(djyZl);//获取校验码
+				String yjyZl=djyZl+jym;//已校验指令
+				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发排队号里的一个字符)
+			}
+		} catch (Exception e) {
+			System.out.println("排队号发送错误");
+			e.printStackTrace();
+		} 
+		finally {
+			RXTXUtil.closeSerialPort(serialPort);
+		}
+	}
+	
+	/**
 	 * 发送没有找到订单
 	 */
 	public static void sendNoOrder() {

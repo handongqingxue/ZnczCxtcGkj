@@ -183,6 +183,8 @@ public class IdReaderUtil {
 			    		org.json.JSONObject nhmResultJO = APIUtil.newHaoMa(ddId);
 			        	if("ok".equals(nhmResultJO.getString("message"))) {
 			        		System.out.println(nhmResultJO.getString("info"));
+			        		int pdh = nhmResultJO.getInt("pdh");
+			        		ChuMoPingUtil.sendPdh(pdh+"");//¸ø´¥ÃþÆÁ·¢ËÍÅÅ¶ÓºÅ
 			        	}
 			        	else {
 			        		System.out.println(nhmResultJO.getString("info"));
