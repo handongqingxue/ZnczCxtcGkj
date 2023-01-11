@@ -220,7 +220,100 @@ public class ChuMoPingUtil {
 		return varNum;
 	}
 	
+	/**
+	 * 发送车牌号
+	 * @param cph
+	 */
+	public static void sendCph(String cph) {
+		SerialPort serialPort = null;
+		try {
+			System.out.println("发送车牌号");
+			String chuMoPingCom = LoadProperties.getChuMoPingCom();
+			// 开启串口
+			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
+			for (int i = 0; i < cph.length(); i++) {
+				char cphChar = cph.charAt(i);
+				int varNum;
+				if(i==0) {//判断是省简称还是后面的数字或字母,调用相应的方法获得变量
+					varNum = getVarNumBySf(cphChar+"");//获取第一位省简称十进制低位变量
+				}
+				else {
+					varNum = getVarNumBySzZm(cphChar+"");//获取第一位之后的字母或数字十进制低位变量
+				}
+				String hexVarNum = HexadecimalUtil.get16Num(varNum);
+				String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
+				String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"0"+i+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+				String jym = CRCUtil.getCRC(djyZl);//获取校验码
+				String yjyZl=djyZl+jym;//已校验指令
+				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发车牌号里的一个字符)
+			}
+		} catch (Exception e) {
+			System.out.println("车牌号发送错误");
+			e.printStackTrace();
+		} 
+		finally {
+			RXTXUtil.closeSerialPort(serialPort);
+		}
+	}
+	
+	/**
+	 * 发送订单号
+	 * @param ddh
+	 */
+	public static void sendDdh(String ddh) {
+		SerialPort serialPort = null;
+		try {
+			System.out.println("发送订单号");
+			String chuMoPingCom = LoadProperties.getChuMoPingCom();
+			// 开启串口
+			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
+			for (int i = 0; i < ddh.length(); i++) {
+				char ddhChar = ddh.charAt(i);
+				int varNum = getVarNumBySzZm(ddhChar+"");
+				String hexVarNum = HexadecimalUtil.get16Num(varNum);
+				String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
+				String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"0"+i+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+				String jym = CRCUtil.getCRC(djyZl);//获取校验码
+				String yjyZl=djyZl+jym;//已校验指令
+				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发车牌号里的一个字符)
+			}
+		} catch (Exception e) {
+			System.out.println("订单号发送错误");
+			e.printStackTrace();
+		} 
+		finally {
+			RXTXUtil.closeSerialPort(serialPort);
+		}
+	}
+	
+	/**
+	 * 发送没有找到订单
+	 */
+	public static void sendNoOrder() {
+		SerialPort serialPort = null;
+		try {
+			System.out.println("发送没有找到订单");
+			String chuMoPingCom = LoadProperties.getChuMoPingCom();
+			// 开启串口
+			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
+			int varNum = getVarNumBySf(NO_ORDER);
+			String hexVarNum = HexadecimalUtil.get16Num(varNum);
+			String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
+			String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"00"+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+			String jym = CRCUtil.getCRC(djyZl);//获取校验码
+			String yjyZl=djyZl+jym;//已校验指令
+			RXTXUtil.sendData(serialPort,yjyZl);//发送指令(没有找到订单仅对应一条指令)
+		} catch (Exception e) {
+			System.out.println("没有找到订单发送错误");
+			e.printStackTrace();
+		} 
+		finally {
+			RXTXUtil.closeSerialPort(serialPort);
+		}
+	}
+	
 	public static void main(String[] args) {
+		/*
 		SerialPort serialPort = RXTXUtil.openSerialPort("COM7", 9600);
 		String str0=HexadecimalUtil.get16Num(getVarNumBySf("鲁"));
 		System.out.println("str0==="+str0);
@@ -241,56 +334,9 @@ public class ChuMoPingUtil {
 		str+=jym;
 		System.out.println("str==="+str);
 		RXTXUtil.sendData(serialPort,str);
-		
-		str="";
-		str0=HexadecimalUtil.get16Num(getVarNumBySzZm("B"));
-		System.out.println("str0==="+str0);
-		str=ADDRESS+FUN_CODE+LOC_HIGHT+"01"+VAR_HIGHT+(str0.length()<2?"0"+str0:str0);
-		jym = CRCUtil.getCRC(str);
-		System.out.println("jym==="+jym);
-		str+=jym;
-		System.out.println("str==="+str);
-		RXTXUtil.sendData(serialPort,str);
-		
-		str="";
-		str0=HexadecimalUtil.get16Num(getVarNumBySzZm("9"));
-		System.out.println("str0==="+str0);
-		str=ADDRESS+FUN_CODE+LOC_HIGHT+"02"+VAR_HIGHT+(str0.length()<2?"0"+str0:str0);
-		jym = CRCUtil.getCRC(str);
-		System.out.println("jym==="+jym);
-		str+=jym;
-		System.out.println("str==="+str);
-		RXTXUtil.sendData(serialPort,str);
-		
-		str="";
-		str0=HexadecimalUtil.get16Num(getVarNumBySzZm("0"));
-		System.out.println("str0==="+str0);
-		str=ADDRESS+FUN_CODE+LOC_HIGHT+"03"+VAR_HIGHT+(str0.length()<2?"0"+str0:str0);
-		jym = CRCUtil.getCRC(str);
-		System.out.println("jym==="+jym);
-		str+=jym;
-		System.out.println("str==="+str);
-		RXTXUtil.sendData(serialPort,str);
-		
-		str="";
-		str0=HexadecimalUtil.get16Num(getVarNumBySzZm("0"));
-		System.out.println("str0==="+str0);
-		str=ADDRESS+FUN_CODE+LOC_HIGHT+"04"+VAR_HIGHT+(str0.length()<2?"0"+str0:str0);
-		jym = CRCUtil.getCRC(str);
-		System.out.println("jym==="+jym);
-		str+=jym;
-		System.out.println("str==="+str);
-		RXTXUtil.sendData(serialPort,str);
-		
-		str="";
-		str0=HexadecimalUtil.get16Num(getVarNumBySzZm("8"));
-		System.out.println("str0==="+str0);
-		str=ADDRESS+FUN_CODE+LOC_HIGHT+"05"+VAR_HIGHT+(str0.length()<2?"0"+str0:str0);
-		jym = CRCUtil.getCRC(str);
-		System.out.println("jym==="+jym);
-		str+=jym;
-		System.out.println("str==="+str);
-		RXTXUtil.sendData(serialPort,str);
+		*/
+		sendCph("鲁B92228");
+		//sendNoOrder();
 	}
 
 }

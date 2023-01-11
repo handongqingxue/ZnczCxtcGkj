@@ -368,6 +368,25 @@ public class LoadProperties {
 	}
 
 	/**
+	 * 触摸屏串口配置
+	 * 
+	 * @return
+	 */
+	public static String getChuMoPingCom() {
+		if (prop == null) {
+			prop = Method2();
+		}
+
+		String trim = prop.getProperty("chuMoPingCom").trim();
+		if (StringUtils.isBlank(trim)) {
+			logger.debug("请在配置文件中配置chuMoPingCom");
+			return null;
+		}
+
+		return trim;
+	}
+
+	/**
 	 * 音柱串口配置
 	 * 
 	 * @return
@@ -385,6 +404,7 @@ public class LoadProperties {
 
 		return trim;
 	}
+	
 	/**
 	 * #进厂车辆摄像头ip hikvisionJinChangIP
 	 * 

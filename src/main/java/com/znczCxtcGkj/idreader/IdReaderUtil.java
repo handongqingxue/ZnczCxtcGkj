@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.znczCxtcGkj.entity.DingDan;
-import com.znczCxtcGkj.entity.DingDanZhuangTai;
+import com.znczCxtcGkj.cmp.ChuMoPingUtil;
+import com.znczCxtcGkj.entity.*;
 import com.znczCxtcGkj.netty.HttpClient;
 import com.znczCxtcGkj.netty.HttpClientHandler;
 import com.znczCxtcGkj.print.QrcodePrint;
@@ -148,6 +148,12 @@ public class IdReaderUtil {
 				long endTime = jhysrqTime + DateUtil.getTime(LoadProperties.getIntoTheFactoryDate());
 				//if (jhysrqTime <= currentTime && currentTime <= endTime) {
 					// 可以进入厂区
+					String ddh = ddJO.getString("ddh");
+					ChuMoPingUtil.sendDdh(ddh);//给触摸屏发送订单号
+					
+					String cyclCph = ddJO.getString("cyclCph");
+					ChuMoPingUtil.sendCph(cyclCph);//给触摸屏发送车牌号
+				
 					if(ckcs==0) {
 						try {
 							ckcs = ckcs + 1;//打印二维码相当于出卡了，出卡次数加1
@@ -193,6 +199,7 @@ public class IdReaderUtil {
 			else {
 				// 语音播报
 				System.out.println("没有获取到当前用户的订单信息");
+				ChuMoPingUtil.sendNoOrder();//给触摸屏发送没有找到订单
 			}
 			//根据身份证号进入排队中end
 		} catch (Exception e) {

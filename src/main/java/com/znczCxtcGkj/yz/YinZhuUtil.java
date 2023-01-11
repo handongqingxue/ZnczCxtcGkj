@@ -17,8 +17,7 @@ public class YinZhuUtil {
 	 * @param sleepTime
 	 * @return
 	 */
-	public static String sendMsg(String modBus, long sleepTime) {
-		String executeOrder = null;
+	public static void sendMsg(String modBus, long sleepTime) {
 		SerialPort serialPort = null;
 		try {
 			logger.info("∑¢ÀÕ“Ù∆µ");
@@ -37,6 +36,5 @@ public class YinZhuUtil {
 			}
 			RXTXUtil.closeSerialPort(serialPort);
 		}
-		return executeOrder;
 	}
 }
