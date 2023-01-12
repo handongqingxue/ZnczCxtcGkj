@@ -8,8 +8,25 @@ public class ChuMoPingUtil {
 	
 	public static final String ADDRESS="01";
 	public static final String FUN_CODE="06";
-	public static final String LOC_HIGHT="00";
-	public static final String VAR_HIGHT="00";
+	//public static final String LOC_HIGHT="00";
+	//public static final String VAR_HIGHT="00";
+	public static final int SF_LOC_NUM=0;
+	public static final int CP1_LOC_NUM=1;
+	public static final int CP2_LOC_NUM=2;
+	public static final int CP3_LOC_NUM=3;
+	public static final int CP4_LOC_NUM=4;
+	public static final int CP5_LOC_NUM=5;
+	public static final int CP6_LOC_NUM=6;
+	public static final int YEAR_LOC_NUM=7;
+	public static final int MD_LOC_NUM=8;
+	public static final int SN_LOC_NUM=9;
+	public static final int PD_LOC_NUM=10;
+	public static final int YEAR_START_LOC_NUM=2;
+	public static final int YEAR_END_LOC_NUM=6;
+	public static final int MD_START_LOC_NUM=6;
+	public static final int MD_END_LOC_NUM=10;
+	public static final int SN_START_LOC_NUM=10;
+	public static final int SN_END_LOC_NUM=14;
 	public static final String NO_ORDER="无订单";
 	
 	public static int getVarNumBySf(String sjc) {
@@ -240,9 +257,34 @@ public class ChuMoPingUtil {
 				else {
 					varNum = getVarNumBySzZm(cphChar+"");//获取第一位之后的字母或数字十进制低位变量
 				}
-				String hexVarNum = HexadecimalUtil.get16Num(varNum);
-				String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
-				String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"0"+i+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+				//String hexVarNum = HexadecimalUtil.get16Num(varNum);
+				//String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
+				
+				int locNum=0;
+				switch (i) {
+				case 0:
+					locNum=SF_LOC_NUM;
+					break;
+				case 1:
+					locNum=CP1_LOC_NUM;
+					break;
+				case 2:
+					locNum=CP2_LOC_NUM;
+					break;
+				case 3:
+					locNum=CP3_LOC_NUM;
+					break;
+				case 4:
+					locNum=CP4_LOC_NUM;
+					break;
+				case 5:
+					locNum=CP5_LOC_NUM;
+					break;
+				case 6:
+					locNum=CP6_LOC_NUM;
+					break;
+				}
+				String djyZl=ADDRESS+FUN_CODE+convertZhiLingStr(locNum)+convertZhiLingStr(varNum);//待校验指令字符串
 				String jym = CRCUtil.getCRC(djyZl);//获取校验码
 				String yjyZl=djyZl+jym;//已校验指令
 				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发车牌号里的一个字符)
@@ -267,16 +309,27 @@ public class ChuMoPingUtil {
 			String chuMoPingCom = LoadProperties.getChuMoPingCom();
 			// 开启串口
 			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
+			int ddhYearNum = Integer.valueOf(ddh.substring(YEAR_START_LOC_NUM, YEAR_END_LOC_NUM));
+			int ddhMdNum = Integer.valueOf(ddh.substring(MD_START_LOC_NUM, MD_END_LOC_NUM));
+			int ddhSnNum = Integer.valueOf(ddh.substring(SN_START_LOC_NUM, SN_END_LOC_NUM));
+			String ss=convertZhiLingStr(ddhYearNum);
+			System.out.println("ss==="+ss);
+			
+			String djyYearZl=ADDRESS+FUN_CODE+convertZhiLingStr(YEAR_LOC_NUM)+ss;//待校验指令字符串
+			String jymYear = CRCUtil.getCRC(djyYearZl);//获取校验码
+			String yjyYearZl=djyYearZl+jymYear;//已校验指令
+			RXTXUtil.sendData(serialPort,yjyYearZl);//发送指令(每次只能发车牌号里的一个字符)
+			
+			/*
 			for (int i = 0; i < ddh.length(); i++) {
 				char ddhChar = ddh.charAt(i);
 				int varNum = getVarNumBySzZm(ddhChar+"");
-				String hexVarNum = HexadecimalUtil.get16Num(varNum);
-				String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
-				String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"0"+i+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+				String djyZl=ADDRESS+FUN_CODE+"0000"+convertZhiLingStr(varNum);//待校验指令字符串
 				String jym = CRCUtil.getCRC(djyZl);//获取校验码
 				String yjyZl=djyZl+jym;//已校验指令
 				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发车牌号里的一个字符)
 			}
+			*/
 		} catch (Exception e) {
 			System.out.println("订单号发送错误");
 			e.printStackTrace();
@@ -327,9 +380,7 @@ public class ChuMoPingUtil {
 			// 开启串口
 			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
 			int varNum = getVarNumBySf(NO_ORDER);
-			String hexVarNum = HexadecimalUtil.get16Num(varNum);
-			String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
-			String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"00"+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
+			String djyZl=ADDRESS+FUN_CODE+"0000"+convertZhiLingStr(varNum);//待校验指令字符串
 			String jym = CRCUtil.getCRC(djyZl);//获取校验码
 			String yjyZl=djyZl+jym;//已校验指令
 			RXTXUtil.sendData(serialPort,yjyZl);//发送指令(没有找到订单仅对应一条指令)
@@ -340,6 +391,27 @@ public class ChuMoPingUtil {
 		finally {
 			RXTXUtil.closeSerialPort(serialPort);
 		}
+	}
+	
+	/**
+	 * 转换指令字符串
+	 * @param num
+	 * @return
+	 */
+	public static String convertZhiLingStr(int num) {
+		String hexStr = null;
+		String hexStrPre = null;
+		String hexNumStr = HexadecimalUtil.get16Num(num);
+		if(hexNumStr.length()==1)
+			hexStrPre = "000";
+		else if(hexNumStr.length()==2)
+			hexStrPre = "00";
+		else if(hexNumStr.length()==3)
+			hexStrPre = "0";
+		else if(hexNumStr.length()==4)
+			hexStrPre = "";
+		hexStr=hexStrPre+hexNumStr;
+		return hexStr.toUpperCase();
 	}
 	
 	public static void main(String[] args) {
@@ -365,7 +437,9 @@ public class ChuMoPingUtil {
 		System.out.println("str==="+str);
 		RXTXUtil.sendData(serialPort,str);
 		*/
-		sendCph("鲁B92228");
+		
+		//sendCph("鲁B92228");
+		sendDdh("DD201201120001");
 		//sendNoOrder();
 	}
 
