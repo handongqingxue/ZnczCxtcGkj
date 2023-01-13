@@ -27,7 +27,9 @@ public class ChuMoPingUtil {
 	public static final int MD_END_LOC_NUM=10;
 	public static final int SN_START_LOC_NUM=10;
 	public static final int SN_END_LOC_NUM=14;
-	public static final String NO_ORDER="无订单";
+	public static final String NO_ORDER_CP="无订单";
+	public static final String NO_ORDER_DDH="DD000000000000";
+	public static final String NO_ORDER_PDH="00";
 	
 	public static int getVarNumBySf(String sjc) {
 		int varNum=0;
@@ -134,7 +136,7 @@ public class ChuMoPingUtil {
 		case "澳":
 			varNum=34;
 			break;
-		case NO_ORDER:
+		case NO_ORDER_CP:
 			varNum=35;
 			break;
 		}
@@ -309,27 +311,30 @@ public class ChuMoPingUtil {
 			String chuMoPingCom = LoadProperties.getChuMoPingCom();
 			// 开启串口
 			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
+			
 			int ddhYearNum = Integer.valueOf(ddh.substring(YEAR_START_LOC_NUM, YEAR_END_LOC_NUM));
+			String ddhYearZl=convertZhiLingStr(ddhYearNum);
+			System.out.println("ddhYearZl==="+ddhYearZl);
+			String djyYearZl=ADDRESS+FUN_CODE+convertZhiLingStr(YEAR_LOC_NUM)+ddhYearZl;//年份待校验指令字符串
+			String jymYear = CRCUtil.getCRC(djyYearZl);//获取年份校验码
+			String yjyYearZl=djyYearZl+jymYear;//年份已校验指令
+			RXTXUtil.sendData(serialPort,yjyYearZl);//发送年份指令(每次只能发年份里的一个字符)
+			
 			int ddhMdNum = Integer.valueOf(ddh.substring(MD_START_LOC_NUM, MD_END_LOC_NUM));
+			String ddhMdZl=convertZhiLingStr(ddhMdNum);
+			System.out.println("ddhMdZl==="+ddhMdZl);
+			String djyMdZl=ADDRESS+FUN_CODE+convertZhiLingStr(MD_LOC_NUM)+ddhMdZl;//月日待校验指令字符串
+			String jymMd = CRCUtil.getCRC(djyMdZl);//获取月日校验码
+			String yjyMdZl=djyMdZl+jymMd;//月日已校验指令
+			RXTXUtil.sendData(serialPort,yjyMdZl);//发送月日指令(每次只能发月日里的一个字符)
+			
 			int ddhSnNum = Integer.valueOf(ddh.substring(SN_START_LOC_NUM, SN_END_LOC_NUM));
-			String ss=convertZhiLingStr(ddhYearNum);
-			System.out.println("ss==="+ss);
-			
-			String djyYearZl=ADDRESS+FUN_CODE+convertZhiLingStr(YEAR_LOC_NUM)+ss;//待校验指令字符串
-			String jymYear = CRCUtil.getCRC(djyYearZl);//获取校验码
-			String yjyYearZl=djyYearZl+jymYear;//已校验指令
-			RXTXUtil.sendData(serialPort,yjyYearZl);//发送指令(每次只能发车牌号里的一个字符)
-			
-			/*
-			for (int i = 0; i < ddh.length(); i++) {
-				char ddhChar = ddh.charAt(i);
-				int varNum = getVarNumBySzZm(ddhChar+"");
-				String djyZl=ADDRESS+FUN_CODE+"0000"+convertZhiLingStr(varNum);//待校验指令字符串
-				String jym = CRCUtil.getCRC(djyZl);//获取校验码
-				String yjyZl=djyZl+jym;//已校验指令
-				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发车牌号里的一个字符)
-			}
-			*/
+			String ddhSnZl=convertZhiLingStr(ddhSnNum);
+			System.out.println("ddhSnZl==="+ddhSnZl);
+			String djySnZl=ADDRESS+FUN_CODE+convertZhiLingStr(SN_LOC_NUM)+ddhSnZl;//序号待校验指令字符串
+			String jymSn = CRCUtil.getCRC(djySnZl);//获取序号校验码
+			String yjySnZl=djySnZl+jymSn;//序号已校验指令
+			RXTXUtil.sendData(serialPort,yjySnZl);//发送序号指令(每次只能发序号里的一个字符)
 		} catch (Exception e) {
 			System.out.println("订单号发送错误");
 			e.printStackTrace();
@@ -350,16 +355,14 @@ public class ChuMoPingUtil {
 			String chuMoPingCom = LoadProperties.getChuMoPingCom();
 			// 开启串口
 			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
-			for (int i = 0; i < pdh.length(); i++) {
-				char pdhChar = pdh.charAt(i);
-				int varNum = getVarNumBySzZm(pdhChar+"");
-				String hexVarNum = HexadecimalUtil.get16Num(varNum);
-				String hexLowVarNum=hexVarNum.length()<2?"0"+hexVarNum:hexVarNum;
-				String djyZl=ADDRESS+FUN_CODE+LOC_HIGHT+"0"+i+VAR_HIGHT+hexLowVarNum;//待校验指令字符串
-				String jym = CRCUtil.getCRC(djyZl);//获取校验码
-				String yjyZl=djyZl+jym;//已校验指令
-				RXTXUtil.sendData(serialPort,yjyZl);//发送指令(每次只能发排队号里的一个字符)
-			}
+
+			int pdhNum = Integer.valueOf(pdh);
+			String pdhZl=convertZhiLingStr(pdhNum);
+			System.out.println("pdhZl==="+pdhZl);
+			String djyPdhZl=ADDRESS+FUN_CODE+convertZhiLingStr(PD_LOC_NUM)+pdhZl;//排队号待校验指令字符串
+			String jymPdh = CRCUtil.getCRC(djyPdhZl);//获取排队号校验码
+			String yjyPdhZl=djyPdhZl+jymPdh;//排队号已校验指令
+			RXTXUtil.sendData(serialPort,yjyPdhZl);//发送排队号指令(每次只能发排队号里的一个字符)
 		} catch (Exception e) {
 			System.out.println("排队号发送错误");
 			e.printStackTrace();
@@ -370,17 +373,17 @@ public class ChuMoPingUtil {
 	}
 	
 	/**
-	 * 发送没有找到订单
+	 * 发送没有找到订单车牌号信息
 	 */
-	public static void sendNoOrder() {
+	public static void sendNoOrderCp() {
 		SerialPort serialPort = null;
 		try {
 			System.out.println("发送没有找到订单");
 			String chuMoPingCom = LoadProperties.getChuMoPingCom();
 			// 开启串口
 			serialPort = RXTXUtil.openSerialPort(chuMoPingCom, 9600);
-			int varNum = getVarNumBySf(NO_ORDER);
-			String djyZl=ADDRESS+FUN_CODE+"0000"+convertZhiLingStr(varNum);//待校验指令字符串
+			int varNum = getVarNumBySf(NO_ORDER_CP);
+			String djyZl=ADDRESS+FUN_CODE+convertZhiLingStr(SF_LOC_NUM)+convertZhiLingStr(varNum);//待校验指令字符串
 			String jym = CRCUtil.getCRC(djyZl);//获取校验码
 			String yjyZl=djyZl+jym;//已校验指令
 			RXTXUtil.sendData(serialPort,yjyZl);//发送指令(没有找到订单仅对应一条指令)
@@ -391,6 +394,15 @@ public class ChuMoPingUtil {
 		finally {
 			RXTXUtil.closeSerialPort(serialPort);
 		}
+	}
+	
+	/**
+	 * 发送没有找到订单信息
+	 */
+	public static void sendNoOrder() {
+		sendNoOrderCp();
+		sendDdh(NO_ORDER_DDH);
+		sendPdh(NO_ORDER_PDH);
 	}
 	
 	/**
@@ -439,8 +451,9 @@ public class ChuMoPingUtil {
 		*/
 		
 		//sendCph("鲁B92228");
-		sendDdh("DD201201120001");
-		//sendNoOrder();
+		//sendDdh("DD202301130002");
+		//sendPdh("02");
+		sendNoOrder();
 	}
 
 }
