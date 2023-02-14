@@ -23,6 +23,8 @@ public class DingDanZhuangTai {
 	public static final String YI_CHANG_TEXT="Òì³£";//19
 	public static final String YI_FEI_QI_TEXT="ÒÑ·ÏÆú";//20
 	
+	public static final String CHECK_SHANG_BANG_TEXT="ÉÏ°õ";
+	
 	private Integer id;
 	public Integer getId() {
 		return id;
