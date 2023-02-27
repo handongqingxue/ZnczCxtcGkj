@@ -410,7 +410,7 @@ public class LoadProperties {
 	 * 
 	 * @return
 	 */
-	public static String gethikvisionJinChangIP() {
+	public static String getHikvisionJinChangIP() {
 		if (prop == null) {
 			prop = Method2();
 		}
@@ -427,7 +427,7 @@ public class LoadProperties {
 	 * 
 	 * @return
 	 */
-	public static String gethikvisionJinChangPort() {
+	public static String getHikvisionJinChangPort() {
 		if (prop == null) {
 			prop = Method2();
 		}
@@ -444,7 +444,7 @@ public class LoadProperties {
 	 * 
 	 * @return
 	 */
-	public static String gethikvisionJinChangUserName() {
+	public static String getHikvisionJinChangUserName() {
 		if (prop == null) {
 			prop = Method2();
 		}
@@ -461,7 +461,7 @@ public class LoadProperties {
 	 * 
 	 * @return
 	 */
-	public static String gethikvisionJinChangPassword() {
+	public static String getHikvisionJinChangPassword() {
 		if (prop == null) {
 			prop = Method2();
 		}

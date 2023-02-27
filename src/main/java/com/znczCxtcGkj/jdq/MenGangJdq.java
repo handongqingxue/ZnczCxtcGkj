@@ -51,6 +51,12 @@ public class MenGangJdq {
 
 	public void open() {
 		try {
+			System.out.println("client==="+client);
+			if(client!=null) {
+				System.out.println("client.isClosed==="+client.isClosed());
+				if(!client.isClosed())//在继电器未关闭情况下需要先关闭再连接
+					client.close();
+			}
 			String jdqIp = LoadProperties.getJdqIp();
 			int jdqPort = LoadProperties.getJdqPort();
 			client=new Socket(jdqIp,jdqPort);

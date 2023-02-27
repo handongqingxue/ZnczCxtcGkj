@@ -5,12 +5,18 @@ import java.util.Date;
 
 import com.znczCxtcGkj.socket.*;
 import com.znczCxtcGkj.util.*;
+import com.znczCxtcGkj.task.CpsbsxtTask;
 
 public class StartTask {
 
 	private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	static CpsbsxtTask cpsbsxtTask;
 	
 	public static void main(String[] args) {
+		// 车牌识别的线程任务
+		cpsbsxtTask = new CpsbsxtTask();
+		cpsbsxtTask.start();
+		
 		int currentPlaceFlag = LoadProperties.getCurrentPlaceFlag();
 		System.out.println("当前位置标识==="+currentPlaceFlag);
 		switch (currentPlaceFlag) {
